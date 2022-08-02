@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Home - Zoopkan Daily Admin','none')"/>
+<body>
+	<div th:replace="navigation :: menu"></div>
+	<div class="container-fluid">
+		<div>
+			<h2>Zoopkan Daily Control panel</h2>
+			Welcome 
+			<a th:href="@{/account}"
+			sec:authentication="principal.fullname"></a>
+			&nbsp;
+			<span sec:authentication="principal.authorities"></span>
+		</div>
+	</div>
+	<div th:replace="navigation :: footer_menu"></div>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		 $("#logoutLink").on("click",function(e){
+			 e.preventDefault();
+			 document.logoutForm.submit();
+		 });
+		 
+	});
+	</script>
+</body>
+</html>

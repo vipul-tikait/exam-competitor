@@ -1,0 +1,31 @@
+<div th:fragment="menu">
+	
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark" >
+<!-- 		<a class="navbar-brand"> <span class="navbar-toggler-icon"></span><img width="150"
+				height="40" th:src="@{${SITE_LOGO}}"> -->
+			<!-- <img  class="img-fluid" style="height: 50px;"
+			th:src="@{/images/uss-logo.PNG}"/> -->	
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#topNavbar, #searchNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+<!-- 		</a> -->
+<!-- 		<a href="#"><i class="fas fa-user-circle" onclick="openNav()"></i></a> -->
+		
+		<div class="collapse navbar-collapse"  id="topNavbar">
+
+			<ul class="navbar-nav mx-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">HOME</a></li>
+<!-- 				<li class="nav-item">&nbsp;|&nbsp;</li> -->
+				<li class="nav-item"><a class="nav-link" th:href="@{/post/all}">BLOGS</a></li>
+<!-- 				&nbsp;|&nbsp; -->
+				<li class="nav-item"><a class="nav-link" th:href="@{/courses}">COURSES</a></li>
+				<!-- <li class="nav-item"><a class="nav-link" th:href="@{/login}">Login</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/register}">Register</a></li> -->
+			</ul>
+		</div>
+		<button  type="button" id="profie-icon"  onclick="openNav()"><i class="fas fa-user-circle ml-auto rounded"></i>
+		</button>
+		
+	</nav>
+</div>

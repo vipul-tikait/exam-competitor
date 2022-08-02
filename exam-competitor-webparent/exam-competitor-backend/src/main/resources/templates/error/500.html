@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+	<div class="m-3">
+		<h2>Sorry, Server has encounter error while processing the
+			request</h2>
+	</div>
+	<div th:replace="fragments :: footer"></div>
+</div>
+
+
+
+</html>

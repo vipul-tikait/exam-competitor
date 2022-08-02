@@ -1,0 +1,137 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+
+	<div>
+		<h4>Manage Question Set</h4>
+		<hr class="solid">
+
+		<div class="row">
+			<div
+				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+				th:replace="fragments::search_form_and_msg('/questions-sets/page/1')"></div>
+			<div class="mt-4 ml-auto">
+				&nbsp;|&nbsp; <a th:href="@{/questions-sets/new}"
+					class="fas fa-user-plus fa-2x icon-dark"></a> &nbsp;|&nbsp;
+
+			</div>
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="table-dark">
+					<tr>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/questions-sets/page/','id', 'Id','tag')"></div>
+						</td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/questions-sets/page/','name', 'Name','none')"></div>
+						<td>PDF</td>
+						<td>Exam Level</td>
+						<td>Exam</td>
+						<td>Main Exam</td>
+						<td>Main Exam Type</td>
+						<td>Enabled</td>
+						<td>Action</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="questionSet : ${listQset}">
+						<td class="hideable-column">[[${questionSet.id}]]</td>
+						<td>[[${questionSet.name}]]</td>
+						<td>[[${questionSet.pdfName}]]</td>
+						<td>[[${questionSet.examLevel.name}]]</td>
+						<td>[[${questionSet.examLevel.exam.name}]]</td>
+						<td>[[${questionSet.examLevel.exam.mainExam.name}]]</td>
+						<td>[[${questionSet.examLevel.exam.mainExam.mainExamType.name}]]</td>
+						<td><div th:replace="fragments::status('/questions-sets/' +${questionSet.id},'questionSet', ${questionSet.enabled})"></div></td>
+						<td>
+							<div class="mt-2" style="display: flex;">
+								<div
+									th:replace="fragments::edit('/questions-sets/edit/'+ ${questionSet.id},'questionSet')"></div>
+								&nbsp;
+								<div>
+									<a
+										class="fas fa-trash-alt fa-2x icon-dark link-question-set-delete"
+										th:questionSetId="${questionSet.id}"
+										th:href="@{'/questions-sets/delete/' + ${questionSet.id}}"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<div class="less-details">
+	<hr class="solid">
+		<div th:each="questionSet : ${listQset}" class="row m-1">
+			<div class="col-4">
+				<div class="hideable-column">[[${questionSet.id}]]</div>
+						<div>[[${questionSet.name}]]</div>
+						<div>[[${questionSet.pdfName}]]</div>
+						<div>[[${questionSet.examLevel.name}]]</div>
+						<div>[[${questionSet.examLevel.exam.name}]]</div>
+						<div>[[${questionSet.examLevel.exam.mainExam.name}]]</div>
+						<div>[[${questionSet.examLevel.exam.mainExam.mainExamType.name}]]</div>
+						
+			</div>
+			<div class="col-8">
+				<div>[[${questionSet.pdfName}]]</div>
+				<div class="mt-2 ml-auto" style="display: flex;">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div
+								th:replace="fragments::status('/questions-sets/' +${questionSet.id},'questionSet', ${questionSet.enabled})"></div></td>
+					&nbsp;
+					<div
+									th:replace="fragments::edit('/questions-sets/edit/'+ ${questionSet.id},'questionSet')"></div>
+					<div>
+						<a
+							class="fas fa-trash-alt fa-2x icon-dark link-question-set-delete"
+							th:questionSetId="${questionSet.id}"
+							th:href="@{'/questions-sets/delete/' + ${questionSet.id}}"></a>
+					</div>
+				</div>
+				<hr class="solid">
+			</div>
+			
+		</div>
+	</div>
+
+	<div th:replace="fragments :: pagination('/questions-sets','Question Set')"></div>
+	<div class="modal fade text-center" id="confirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+					<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="confirmText"></span>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-success" id="yesButton">Yes</a>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		function clearSearch() {
+			window.location = "[[@{/questions-sets}]]";
+		}
+	</script>
+
+
+</div>
+<!-- /.container-fluid -->
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<div layout:fragment="content">
+
+	<div class="list-group" th:each="post : ${posts}">
+		<div class="card m-1">
+			<div class="card-header">
+				<h4>[[${post.title}]]</h4>
+			</div>
+			<div class="card-body">
+				<p class="text-left">
+					<small> Author : [[${post.user.fullName}]]</small>
+				</p>
+				<p th:utext="${post.body}" class="border"></p>
+<!--				<a th:href="@{'/post/' + ${post.id}}">
+					
+ 				</a> -->
+<!-- 					<button type="submit" class="btn btn-success">Read More</button> -->
+				
+				<hr class="hr-dash" />
+				<ul class="list-inline list-unstyled">
+					<li><span><i class="fa fa-calendar fa-1"
+							aria-hidden="true"></i> [[${#dates.format(post.creationDate,
+							'yyyy MMM dd, HH:MM:ss')}]]</span></li>
+					<li>|</li>
+
+					<span><i class="fa fa-comment"></i>&nbsp;[[${#lists.size(post.comments)}]]
+						Comments</span>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<div layout:fragment="content" class="container-fluid">
+	<div class="list-group" th:each="post : ${posts}">
+
+		<!-- <a th:href="@{'/post/' + ${post.id}}" class="list-group-item list-group-item-action" aria-current="true">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1">[[${post.title}]]</h5>
+				<small><h5 th:text="'Published on ' + ${#dates.format(post.creationDate, 'yyyy MMMM dd')} + ' by ' + ${post.user.fullName}">Creation
+				date and by whom</h5></small>
+			</div>
+			<p class="mb-1">[[${post.body}]]</small>
+		</a>  -->
+
+
+		<div class="well">
+			<div class="media">
+				<a class="pull-left" href="#"> <!--     		<img class="media-object" src="http://placekitten.com/150/150"> -->
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading" style="border: thin;">
+						<a th:href="@{'/post/' + ${post.id}}" th:text="${post.title}">Title</a></h4>
+					</div>
+					<!-- <div class="align-right"  th:if="${post.user.fullName == principal.fullName}">
+					    <a th:href="@{'/editPost/{id}'(id=${post.id})}">
+			                <button class="green-btn blue-btn" type="button">Edit</button>
+			            </a>
+			        </div>  -->
+<!-- 			         <span sec:authentication="principal.fullname">Bob</span> -->
+<!-- 			         <sec:authentication var="principal" property="principal.fullname" /> -->
+					<div class="text-right"><a class="fas fa-trash-alt fa-2x icon-dark link-comment-delete"
+							th:href="@{'/post/delete/' + ${post.id}}"></a></div>
+					</div>
+					
+			        <hr class="hr-dash" />
+					<p class="text-left">
+						<small> Author : [[${post.user.fullName}]]</small>
+					</p>
+					<p>[[${post.body}]]</p>
+					<hr class="hr-dash" />
+					<ul class="list-inline list-unstyled">
+						<li><span><i class="fa fa-calendar fa-1" aria-hidden="true"></i>
+								[[${#dates.format(post.creationDate, 'yyyy MMM dd, HH:MM:ss')}]]</span></li>
+						<li>|</li>
+						
+						<span><i class="fa fa-comment"></i>&nbsp;[[${#lists.size(post.comments)}]] Comments</span>
+						<!-- <li>|</li>
+						<li><span class="fa fa-star"></span> <span
+							class="fa fa-star"></span> <span
+							class="fa fa-star"></span> <span
+							class="fa fa-star"></span> <span
+							class="fa regular fa-star"></span></li>
+						<li>|</li>
+						<li>
+							<span><i class="fa fa-facebook"></i></span> 
+							<span><i class="fa fa-twitter"></i></span> 
+							<span><i class="fa fa-google-plus"></i></span>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- 	<div class="posts_wrapper">
+		<div class="post" th:each="post : ${posts}">
+			<h2>
+				<a th:href="@{'/post/' + ${post.id}}" th:text="${post.title}">Title</a>
+			</h2>
+			<h5 th:text="'Published on ' + ${#dates.format(post.creationDate, 'yyyy MMMM dd')} + ' by ' + ${post.user.fullName}">Creation
+				date and by whom</h5>
+			<div class="img">Image</div>
+			<p th:text="${post.body}">body text</p>
+			<br>
+		</div>
+	</div>
+ -->
+	</div>
+</div>
+
+</html>

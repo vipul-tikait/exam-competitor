@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<div>
+			<h4>Assign Questions to Question Set</h4>
+			<hr class="solid">
+			<div class="row">
+				<form th:action="@{/questions/assign/page/1}"
+					class="form-inline m-3" id="addMoreQueForm" >
+					<input type="hidden" name="amsortField" th:value="${amsortField}" /> <input
+						type="hidden" name="amsortDir" th:value="${amsortDir}" /> <input
+						type="hidden" name="qSetId" th:value="${qSetId}" /> <input
+						type="hidden" name="questionSet" th:value="${questionSet}" />
+
+
+					Question Set:&nbsp; [[${questionSet.name}]] &nbsp;Filter:&nbsp; <input
+						type="search" name="amkeyword" th:value="${amkeyword}"
+						class="form-control" /> &nbsp;&nbsp;
+					<button type="submit" class="btn btn-primary">
+						<i class="fas fa-search"></i>
+					</button>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-secondary"
+						onclick="clearSearch()">
+						<i class="fas fa-eraser"></i>
+					</button>
+					<br> Topics:&nbsp; <select class="form-control"
+						name="amtopicId" id="dropdownTopicAtAddMoreQue">
+						<option value="0">All Topics</option>
+						<th:block th:each="topic : ${listTopicAddMore}">
+							<option th:value="${topic.id}"
+								th:selected="(${amtopicId} == ${topic.id})">[[${topic.name}]]</option>
+						</th:block>
+					</select>
+
+
+					<div class="full-details">
+						<table
+							class="table table-bordered table-striped table-hover table-responsive-xl">
+							<thead class="table-dark">
+								<tr>
+									<td>Select</td>
+									<td>Id</td>
+									<td>Photo</td>
+									<td>
+										<div
+											th:replace="fragments::column_link('/questions/assign/page/','name', 'Content','none')"></div>
+									<td class="hideable-column">
+										<div
+											th:replace="fragments::column_link('/questions/assign/page/','pdfName', 'PDF','none')"></div>
+									</td>
+									<td>
+										<div
+											th:replace="fragments::column_link('/questions/assign/page/','topic', 'Topic','tag')"></div>
+									</td>
+									<td>Enabled</td>
+									<td>Action</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="question : ${questionListAddMore}"  > 
+									<td><input type="checkbox" th:field="*{questionSet.questions}"
+								th:value="${question.id}"
+								class="m-2"/> </td>
+									<td>[[${question.id}]]</td>
+									<td></td>
+									<td>[[${question.name}]]</td>
+									<td>[[${question.pdfName}]]</td>
+									<td class="hideable-column">[[${question.topic.name}]]</td>
+									<td><div
+											th:replace="fragments::status('/questions/assign/' +${question.id},'question', ${question.enabled})"></div></td>
+									<td>
+										<div class="mt-2" style="display: flex;">
+											<div
+												th:replace="fragments::edit('/questions/assign/edit/'+ ${question.id},'question')"></div>
+											&nbsp;
+											<!-- <div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+										th:userId="${question.id}"
+										th:href="@{'/questions/delete/' + ${question.id}}"></a>
+								</div> -->
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+					<div class="less-details">
+						<hr class="solid">
+						<div th:each="question : ${questionList}" class="row m-1">
+							<div class="col-4"></div>
+							<div class="col-8">
+								<div>[[${question.name}]]</div>
+								<div>[[${question.topic.name}]]</div>
+								<div class="mt-2 ml-auto" style="display: flex;">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<div
+										th:replace="fragments::status('/questions/assign/' +${question.id},'question', ${question.enabled})"></div>
+									&nbsp;
+									<div
+										th:replace="fragments::edit('/questions/assign/edit/'+ ${question.id},'question')"></div>
+									<div>
+										<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+											th:userId="${question.id}"
+											th:href="@{'/questions/assign/delete/' + ${question.id}}"></a>
+									</div>
+								</div>
+								<hr class="solid">
+							</div>
+
+						</div>
+					</div>
+					
+					<div
+						th:replace="fragments :: paginationAm('/questions/assign','Questions')"></div>
+					<input type="submit" value="Save" id="buttonSaveQue" class="btn btn-primary m-3">
+					
+				</form>
+			</div>
+			<div class="modal fade text-center" id="confirmModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<span id="confirmText"></span>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-success" id="yesButton">Yes</a>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+			function clearSearch() {
+				window.location = "[[@{/questions/assign/page/1?qSetId=0}]]";
+			}
+		</script>
+
+
+	</div>
+</body>
+</html>

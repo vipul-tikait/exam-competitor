@@ -1,0 +1,33 @@
+<div th:fragment="rightbar" class="col-sm-3">
+
+<!-- <aside id="media_image-6"
+		class="widget inner-padding widget_media_image"> -->
+<!-- 		<a href="https://telegram.me/upscsupersimplified"> -->
+		
+		<div class="card m-1"  id="sticky-sidebar">
+		<img class="img-fluid" 
+			th:src="@{/images/telegram-join-us.jpg}"
+			alt="" style="max-width: 100%; height: 50%;" onclick="window.open('https://telegram.me/upscsupersimplified');"/>
+			</div>
+<!-- 		</a> -->
+<!-- 	</aside> -->
+	
+	<div class="card m-1" >
+		<div class="card-header" >Recent Posts</div>
+<!-- 		<div class="card-body"> -->
+		<div class="">
+			<div class="list-group" th:each="post : ${posts}">
+				<div class="list-group-item"><a th:href="@{'/post/' + ${post.id}}" >[[${#strings.abbreviate(post.title,40)}]]</a></div>
+			</div>
+			 
+		</div>
+	</div>
+
+	<div class="card m-1">
+		<div class="card-header">Panel 2</div>
+		<div class="card-body">
+			<div style="padding-bottom: 5px;">Panel 2 Content</div>
+		</div>
+	</div>
+	
+</div>

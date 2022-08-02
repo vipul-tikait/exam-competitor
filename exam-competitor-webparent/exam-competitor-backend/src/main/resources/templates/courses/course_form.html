@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+	<div>
+		<h4>Manage Course | [[${pageTitle}]]</h4>
+		<hr class="solid">
+	</div>
+
+	<div>
+		<form th:action="@{/courses/save}" method="post"
+			style="max-width: 700px; margin: 0 auto;" th:object="${course}"
+			enctype="multipart/form-data"
+			onsubmit="return checkCourseUnique(this);">
+			<input type="hidden" th:field="*{id}">
+			<div class="border border-secondary rounded p-3">
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Name</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{name}"
+							required="required" minlength="8" maxlength="200">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Start Date</label>
+					<div class="col-sm-8">
+						<input type="date" class="form-control" th:field="*{startDate}"
+							data-date-format="yyyy-mm-dd" required="required">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">End Date</label>
+					<div class="col-sm-8">
+						<input type="date" class="form-control" th:field="*{endDate}"
+							data-date-format="yyyy-mm-dd" required="required">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Price</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{price}"
+							 required="required">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Description</label>
+					<div class="col-sm-8">
+						<textarea rows="5" class="form-control" th:field="*{description}"> </textarea>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Additional points</label>
+					<div id="divCourseDetails" class="col-sm-8">
+						
+						<th:block th:each="detail, status : ${course.details}" >
+							<div th:id="'divCourseDetail' + ${status.index}">
+								<div class="row">
+									<div  class="col-sm-7">
+										<input type="hidden" name="detailIDs" th:value="${detail.id}" />
+										<input type="text" class="form-control" name="detailNames" maxlength="255" th:value="${detail.name}" /> 
+									</div>
+									<div class="col-sm-3">
+<!-- 										<input type="checkbox" class="form-control" name="detailValues" th:value="${detail.value}"  />  -->
+										<select class="form-control" name="detailValues" th:value="${detail.value}">
+										    <option value="Y" th:selected="(${detail.value} == 'Y')">Yes</option>
+									 		 <option value="N"th:selected="(${detail.value} == 'N')">No</option>
+										</select>
+									</div>
+										<a name="linkRemoveCourseDetail" class="btn fas fa-times-circle fa-2x icon-dark" style='color: red'title="Remove this detail"></a>
+								</div>
+							</div>
+						</th:block>
+						<hr class="solid">
+						<div th:id="'divCourseDetail' + ${#lists.size(course.details)}" class="row">
+							<div class="col-sm-7">
+								<input type="hidden" name="detailIDs" value="0" /> 
+								<input type="text" class="form-control" name="detailNames" maxlength="255" />&nbsp; 
+							</div>
+							<div class="col-sm-3">
+								<select class="form-control"  name="detailValues"  >
+									   <option value="Y">Yes</option>
+									  <option value="N">No</option>
+									</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<input type="button" class="btn btn-secondary"
+						value="Add More Detail" onclick="addNextCourseDetailSection()" />
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Number Of TEST</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{numberOfTest}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Enabled</label>
+					<div class="col-sm-8">
+						<input type="checkbox" th:field="*{enabled}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Main Exam Type:</label>
+					<div class="col-sm-8">
+						<select id="mainExamTypeSelect"
+							th:field="*{examLevel.exam.mainExam.mainExamType.id}"
+							class="form-control" required>
+							<!-- 							<option value='-1'>SELECT</option> -->
+							<th:block th:each="mainExamType : ${mainExamTypeList}">
+								<option th:value="${mainExamType.id}">[[${mainExamType.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Main Exam:</label>
+					<div class="col-sm-8">
+						<select id="mainExamSelect"
+							th:field="*{examLevel.exam.mainExam.id}" class="form-control"
+							required>
+							<!-- 							<option value='-1'>SELECT</option> -->
+							<th:block th:each="mainExam : ${mainExamList}">
+
+								<option th:value="${mainExam.id}">[[${mainExam.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Exam:</label>
+					<div class="col-sm-8">
+						<select id="examSelect" th:field="*{examLevel.exam.id}"
+							class="form-control" required>
+							<!-- 							<option value='-1'>SELECT</option> -->
+							<th:block th:each="exam : ${examList}">
+								<option th:value="${exam.id}">[[${exam.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Exam Level:</label>
+					<div class="col-sm-8">
+						<select id="examLevelSelect" th:field="*{examLevel.id}"
+							class="form-control" required>
+							<!-- 							<option value='-1'>SELECT</option> -->
+							<th:block th:each="examLevel : ${examLevelList}">
+								<option th:value="${examLevel.id}">[[${examLevel.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+
+
+				<br>
+				<div class="text-center">
+					<input type="submit" value="Save" class="btn btn-primary m-3">
+					<input type="button" value="Cancel" class="btn btn-secondary"
+						id="buttonCancel">
+				</div>
+
+			</div>
+
+		</form>
+		<hr class="solid">
+
+		<div th:if="${course.questionSet != null}">
+			<div class="border border-secondary rounded p-3">
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">QuestionSet ID : </label>
+
+					<div class="col-sm-6">
+						<input type="text" class="form-control"
+							th:field="*{course.questionSet.name}" required="required"
+							readonly="readonly">
+					</div>
+
+					<div class="col-sm-1"
+						th:replace="fragments::assignQset('/courses/' +${course.id}+'/assign/'+${course.questionSet.id},false)">
+					</div>
+					&nbsp;| &nbsp;
+					<div class="col-sm-1"
+						th:replace="fragments::edit('/questions-sets/edit/'+ ${course.questionSet.id},'questionSet')"></div>
+				</div>
+				<hr class="solid">
+				<!-- IF CUSTOMER IS ANONYMOUS -->
+				<div th:if="${course.questionSet.questions != null}">
+					<div class="full-details">
+						<table
+							class="table table-bordered table-striped table-hover table-responsive-xl">
+							<thead class="table-dark">
+								<tr>
+									<td class="hideable-column">
+										<div
+											th:replace="fragments::column_link('/questions/page/','q_id', 'Id','tag')"></div>
+									</td>
+									<td>
+										<div
+											th:replace="fragments::column_link('/questions/page/','name', 'Desc','none')"></div>
+									<td>
+										<div
+											th:replace="fragments::column_link('/questions/page/','topicId', 'Topic','none')"></div>
+									</td>
+									<td>Enabled</td>
+									<td>Action</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="ques : ${course.questionSet.questions}">
+									<td class="hideable-column">[[${ques.id}]]</td>
+									<td>[[${ques.name}]]</td>
+									<td>[[${ques.topic.name}]]</td>
+									<td><div
+											th:replace="fragments::status('/questions/' +${ques.id},'ques', ${ques.enabled})"></div></td>
+									<td>
+										<div class="mt-2" style="display: flex;">
+											<div
+												th:replace="fragments::edit('/questions/edit/'+ ${ques.id},'ques')"></div>
+											&nbsp;
+											<div>
+												<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+													th:userId="${ques.id}"
+													th:href="@{'/questions/delete/' + ${ques.id}}"></a>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- ELSE -->
+				<div th:unless="${course.questionSet != null}">
+					<div class="text-center m-2">
+						<h3>No Questions attached to Question set.</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ELSE -->
+		<div th:unless="${course.questionSet != null}">
+			<div class="text-center m-2">
+				<h4>No Question Set attached, please add one</h4>
+				&nbsp; <a class="fas fa-plus-circle fa-2x icon-green link-detail"
+					th:href="@{'/questions-sets/view/'+${course.id}}"> </a>
+			</div>
+		</div>
+
+
+		<!-- <div class="row m-2">
+			<th:block th:each="i: ${#numbers.sequence(1, course.numberOfTest)}">
+										<button  class="active">HAM</button>
+				<button class="card border-success m-2" style="max-width: 18rem;">
+					<div class="card-header bg-transparent border-success">
+														<div class="row">
+						<div class="mx-auto">TEST - [[${i}]]</div>
+														</div>
+					</div>
+					<div class="card-body text-success">
+						<h5 class="card-title">PDF</h5>
+						<p class="card-text">NAME</p>
+					</div>
+				</button>
+										<button th:unless="${course.duration == i}">Dummy</button>
+			</th:block>
+		 -->
+		<!-- <div th:each="question : ${course.duration}">
+						<div class="card border-success m-2" style="max-width: 18rem;">
+							<div class="card-header bg-transparent border-success">
+								<div class="row">
+									<div class="mx-auto">TEST - ${question} </div>
+								</div>
+							</div>
+							<div class="card-body text-success">
+								<h5 class="card-title">PDF</h5>
+								<p class="card-text">NAME</p>
+							</div>
+						</div>
+					</div> -->
+	</div>
+	<div class="modal fade" id="detailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		moduleURL = "[[@{/courses}]]";
+		$(document).ready(
+				function() {
+					$(".link-delete").on("click", function(e) {
+						e.preventDefault();
+						showDeleteConfirmationModel($(this), 'products');
+					});
+					$(".link-detail").on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetailURL = $(this).attr("href");
+								$("#detailModal").modal("show").find(
+										".modal-content").load(linkDetailURL);
+							});
+				});
+	</script>
+
+
+</div>
+
+
+
+</html>

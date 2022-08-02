@@ -1,0 +1,255 @@
+<ul th:fragment="menu"
+	class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+	id="accordionSidebar">
+
+	<!-- Sidebar - Brand -->
+	<a
+		class="sidebar-brand-custom d-flex align-items-center justify-content-center"
+		href="#">
+		<div class="sidebar-brand-icon"
+			style="padding: 0.3125rem; height: 70px; width: auto;">
+
+			<a th:href="@{/}"> <img style="width: 100%; height: 100%;"
+				th:src="@{${SITE_LOGO}}">
+			</a>
+		</div>
+		<div class="sidebar-brand-text mx-3"></div>
+	</a>
+
+	<!-- Divider -->
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider my-0" />
+
+		<!-- Nav Item - Dashboard -->
+		<li class="nav-item active"><a class="nav-link" th:href="@{/}">
+				<i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span>
+		</a></li>
+	</th:block>
+
+	<!-- Divider -->
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapseOne"
+			aria-expanded="true" aria-controls="collapseOne"> <i
+				class="fas fa-fw fa-cog"></i> <span>Users</span>
+		</a>
+			<div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+				data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="collapse-item" th:href="@{/users}">View All</a> <a
+						class="collapse-item" th:href="@{/users/new}">Create New</a>
+				</div>
+			</div></li>
+	</th:block>
+	<!-- <th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		Nav Item - Pages Collapse Menu
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapseTwo"
+			aria-expanded="true" aria-controls="collapseTwo"> <i
+				class="fas fa-fw fa-cog"></i> <span>Categories</span>
+		</a>
+			<div id="collapseTwo" class="collapse"
+				aria-labelledby="headingTwo" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="dropdown-item" th:href="@{/categories}">View All</a> <a
+						class="dropdown-item" th:href="@{/categories/new}">Create New</a>
+				</div>
+			</div></li>
+	</th:block>
+	 -->
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<li class="nav-item active"><a class="nav-link"
+			th:href="@{/customers}"> <i class="fas fa-fw fa-cog"></i> <span>Students</span>
+		</a></li>
+	</th:block>
+	<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapseFour"
+			aria-expanded="true" aria-controls="collapseFour"> <i
+				class="fas fa-fw fa-cog"></i> <span>Blogs</span>
+		</a>
+			<div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+				dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+
+					<th:block sec:authorize="hasAuthority('Admin')">
+						<a class="dropdown-item" th:href="@{/post/all}">View All</a>
+					</th:block>
+
+					<a class="dropdown-item" th:href="@{/post/mine}">My Blogs</a> <a
+						class="dropdown-item" th:href="@{/post/new}">New Blog</a>
+					<!-- <a class="dropdown-item" th:href="@{/blogs#countries}">Countries</a>
+							<a class="dropdown-item" th:href="@{/blogs#states}">States</a>
+							<a class="dropdown-item" th:href="@{/blogs#mailServer}">Mail
+								Server</a> <a class="dropdown-item"
+								th:href="@{/settings#mailTemplate}">Mail Templates</a> <a
+								class="dropdown-item" th:href="@{/blogs#payment}">Payment</a> -->
+				</div>
+			</div></li>
+	</th:block>
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapseFive"
+			aria-expanded="true" aria-controls="collapseFive"> <i
+				class="fas fa-fw fa-cog"></i> <span>Courses</span>
+		</a>
+			<div id="collapseFive" class="collapse"
+				aria-labelledby="headingFives" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="dropdown-item" th:href="@{/courses}">View All</a>
+					<th:block sec:authorize="hasAuthority('Admin')">
+						<a class="dropdown-item" th:href="@{/courses/new}">New Course</a>
+					</th:block>
+					<th:block sec:authorize="hasAuthority('Admin')">
+						<a class="dropdown-item" th:href="@{/courses/type}">Course Types</a>
+					</th:block>
+				</div>
+			</div></li>
+	</th:block>
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapse6"
+			aria-expanded="true" aria-controls="collapse6"> <i
+				class="fas fa-fw fa-cog"></i> <span>Question</span>
+		</a>
+			<div id="collapse6" class="collapse"
+				aria-labelledby="heading6" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<th:block sec:authorize="hasAuthority('Admin')">
+						<a class="dropdown-item" th:href="@{/questions}">Questions</a>
+						<a class="dropdown-item" th:href="@{/questions-sets}">Question Set</a>
+<!-- 						<a class="dropdown-item" th:href="@{/questions/assign}">Assign Questions</a> -->
+					</th:block>
+					
+				</div>
+			</div></li>
+	</th:block>
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapse7"
+			aria-expanded="true" aria-controls="collapse7"> <i
+				class="fas fa-fw fa-cog"></i> <span>Topics</span>
+		</a>
+			<div id="collapse7" class="collapse"
+				aria-labelledby="heading7" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<th:block sec:authorize="hasAuthority('Admin')">
+						<a class="dropdown-item" th:href="@{/topics}">View All</a>
+						<a class="dropdown-item" th:href="@{/topics/new}">Create New</a>
+					</th:block>
+					
+				</div>
+			</div></li>
+	</th:block>
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapse9"
+			aria-expanded="true" aria-controls="collapse9"> <i
+				class="fas fa-fw fa-cog"></i> <span>Exam Management</span>
+		</a>
+			<div id="collapse9" class="collapse"
+				aria-labelledby="heading9" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="dropdown-item" th:href="@{/mainExamTypes}">Main Exam Type</a>
+					<a class="dropdown-item" th:href="@{/mainExams}">Main Exam</a>
+					<a class="dropdown-item" th:href="@{/exams}">Exam</a> <a
+						class="dropdown-item" th:href="@{/exam-levels}">Exam Level</a> 
+				</div>
+			</div></li>
+	</th:block>
+
+	
+	<th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapseThree"
+			aria-expanded="true" aria-controls="collapseThree"> <i
+				class="fas fa-fw fa-cog"></i> <span>Settings</span>
+		</a>
+			<div id="collapseThree" class="collapse"
+				aria-labelledby="headingThree" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="dropdown-item" th:href="@{/settings#general}">General</a>
+					<a class="dropdown-item" th:href="@{/settings#countries}">Countries</a>
+					<a class="dropdown-item" th:href="@{/settings#states}">States</a> <a
+						class="dropdown-item" th:href="@{/settings#mailServer}">Mail
+						Server</a> <a class="dropdown-item"
+						th:href="@{/settings#mailTemplate}">Mail Templates</a> <a
+						class="dropdown-item" th:href="@{/settings#payment}">Payment</a>
+				</div>
+			</div></li>
+	</th:block>
+
+
+	<!-- <th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		Nav Item - Pages Collapse Menu
+		<li class="nav-item active"><a class="nav-link collapsed"
+			data-toggle="collapse" data-target="#collapseFive"
+			aria-expanded="true" aria-controls="collapseFive"> <i
+				class="fas fa-fw fa-cog"></i> <span>Products</span>
+		</a>
+			<div id="collapseFive" class="collapse"
+				aria-labelledby="headingFive" dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="dropdown-item" th:href="@{/categories}">View All</a> <a
+						class="dropdown-item" th:href="@{/categories/new}">Create New</a>
+				</div>
+			</div></li>
+	</th:block>
+ -->
+	<!-- <th:block sec:authorize="hasAuthority('Admin')">
+		<hr class="sidebar-divider"></hr>
+		<li class="nav-item active">
+			<a class="nav-link collapsed"
+				data-toggle="collapse" data-target="#collapse6"
+				aria-expanded="true" aria-controls="collapse6"> 
+				<i class="fas fa-fw fa-cog"></i> <span>Videos</span>
+			</a>
+			<div id="collapse6" class="collapse" aria-labelledby="heading6"
+				dsa-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="dropdown-item" th:href="@{/videos/all}">View All</a> <a
+						class="dropdown-item" th:href="@{/categories/new}">Create New</a>
+				</div>
+			</div>
+		</li>
+	</th:block>
+ -->
+	<hr class="sidebar-divider">
+
+
+	<li class="nav-item active"><a class="nav-link" href="about">
+			<i class="fas fa-fw fa-tachometer-alt"></i> <span>About Us</span>
+	</a></li>
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<li class="nav-item active"><a class="nav-link" href="contact">
+			<i class="fas fa-fw fa-tachometer-alt"></i> <span>Contact Us</span>
+	</a></li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider d-none d-md-block">
+
+	<!-- Sidebar Toggler (Sidebar) -->
+	<div class="text-center d-none d-md-inline">
+		<button class="rounded-circle border-0" id="sidebarToggle"></button>
+	</div>
+
+</ul>

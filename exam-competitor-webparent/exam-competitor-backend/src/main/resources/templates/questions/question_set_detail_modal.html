@@ -1,0 +1,68 @@
+<div class="modal-header">
+	<h4 class="modal-title">Question Set</h4>
+	<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+</div>
+<div>
+		<div class="row">
+			<div
+				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+				th:replace="fragments::search_form_and_msg('/questions-sets/page/1')"></div>
+			<div class="mt-4 ml-auto">
+				&nbsp;|&nbsp; <a th:href="@{/questions-sets/new}"
+					class="fas fa-user-plus fa-2x icon-dark"></a> &nbsp;|&nbsp;
+				
+			</div>
+		</div>
+		
+		<div class="full-details m-1">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="table-dark">
+					<tr>
+						<td>Assign</td>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/questions-sets/page/','id', 'Id','tag')"></div>
+						</td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/questions-sets/page/','name', 'Name','none')"></div>
+						<td>
+							<div
+								th:replace="fragments::column_link('/questions-sets/page/','pdfName', 'Type','none')"></div>
+						</td>
+						<td>Enabled</td>
+						<td>Action</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="questionSet : ${listQset}">
+						<td> <div
+								th:replace="fragments::assignQset('/courses/' +${courseId}+'/assign/'+${questionSet.id},true)"> </div></td>
+						<td class="hideable-column">[[${questionSet.id}]]</td>
+						<td>[[${questionSet.name}]]</td>
+						<td>[[${questionSet.pdfName}]]</td>
+						<td><div
+								th:replace="fragments::status('/questions-sets/' +${questionSet.id},'questionSet', ${questionSet.enabled})"></div></td>
+						<td>
+							<div class="mt-2" style="display: flex;">
+								<div
+									th:replace="fragments::edit('/questions-sets/edit/'+ ${questionSet.id},'questionSet')"></div>
+								&nbsp;
+								<div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-question-set-delete"
+										th:questionSetId="${questionSet.id}"
+										th:href="@{'/questions-sets/delete/' + ${questionSet.id}}"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+</div>

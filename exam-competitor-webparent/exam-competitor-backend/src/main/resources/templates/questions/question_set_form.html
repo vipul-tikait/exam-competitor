@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+	<div>
+		<h4>Manage Question Set | [[${pageTitle}]]</h4>
+		<hr class="solid">
+	</div>
+	<div th:if="${message !=null}" class="alert alert-warning text-center">[[${message}]]</div>
+	<div>
+		<form action="#" th:action="@{/questions-sets/save}" method="post"
+			style="margin: 0 auto;" th:object="${questionSet}"
+			enctype="multipart/form-data" id="saveQueSetForm"
+			onsubmit="return checkEmailUnique(this);">
+
+
+			<input type="hidden" th:field="*{id}"> <input type="hidden"
+				name="sortField" th:value="${sortField}" /> <input type="hidden"
+				name="sortDir" th:value="${sortDir}" />
+
+			<div class="border border-secondary rounded p-3">
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Name</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" th:field="*{prefix}"
+							id="qName" readonly="readonly" required="required">
+					</div>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" readonly="readonly"
+							required="required" th:field="*{id}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Main Exam Type:</label>
+					<div class="col-sm-8">
+						<select id="mainExamTypeSelect"
+							th:field="*{examLevel.exam.mainExam.mainExamType.id}"
+							class="form-control" required>
+							<option value='-1'>SELECT</option>
+							<th:block th:each="mainExamType : ${mainExamTypeList}">
+								<option th:value="${mainExamType.id}">[[${mainExamType.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Main Exam:</label>
+					<div class="col-sm-8">
+						<select id="mainExamSelect"
+							th:field="*{examLevel.exam.mainExam.id}" class="form-control"
+							required>
+							<option value='-1'>SELECT</option>
+							<th:block th:each="mainExam : ${mainExamList}">
+
+								<option th:value="${mainExam.id}">[[${mainExam.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Exam:</label>
+					<div class="col-sm-8">
+						<select id="examSelect" th:field="*{examLevel.exam.id}"
+							class="form-control" required>
+							<option value='-1'>SELECT</option>
+							<th:block th:each="exam : ${examList}">
+								<option th:value="${exam.id}">[[${exam.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Exam Level:</label>
+					<div class="col-sm-8">
+						<select id="examLevelSelect" th:field="*{examLevel.id}"
+							class="form-control" required>
+							<option value='-1'>SELECT</option>
+							<th:block th:each="examLevel : ${examLevelList}">
+								<option th:value="${examLevel.id}">[[${examLevel.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Description</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{description}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">PDF</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{pdfName}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Enabled</label>
+					<div class="col-sm-8">
+						<input type="checkbox" th:field="*{enabled}" required="required">
+					</div>
+				</div>
+				<br>
+
+
+				<div class="text-center">
+					<input type="submit" value="Save" class="btn btn-primary m-3">
+					<input type="button" value="Cancel" class="btn btn-secondary"
+						id="buttonCancel">
+				</div>
+			</div>
+		</form>
+
+		<hr class="solid">
+		<a class="fas fa-edit fa-2x icon-green" 
+		th:href="@{'/questions/assign?qSetId='+*{id}}"
+			title="Edit this data"></a>
+		<input type="submit" value="Assign" id="buttonSaveQue"
+						class="btn btn-primary m-3">
+		
+		<!-- 			<div th:if="${#lists.size(questionSet.questions) > 0}"> -->
+		<!-- </div>
+			<div th:unless="${#lists.size(questionSet.questions) > 0}">
+				<h4>No Questions attached, please add one</h4>
+				&nbsp; <a
+					class="fas fa-plus-circle fa-2x icon-green link-questions-list-detail"
+					th:href="@{'/questions'}"> </a>
+			</div> -->
+		<!-- 		</form> -->
+		<!-- <div>
+			<ul class="nav nav-tabs" id="queTab" role="tablist">
+				<li class="nav-item"><a class="nav-link active"
+					data-toggle="tab" href="#assigned_questions" role="tab">Assigned
+						Questions</a></li>
+				<li class="nav-item"><a class="nav-link" data-toggle="tab"
+					href="#add_more_questions" role="tab">Add More Questions</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active p-3" id="assigned_questions"
+					role="tabpanel">
+					<div th:replace="questions/assigned_questions :: content"></div>
+				</div>
+				<div class="tab-pane p-3" id="add_more_questions" role="tabpanel">
+					<div th:replace="questions/add_more_questions :: content"></div>
+				</div>
+
+			</div>
+		</div> -->
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="table-dark">
+					<tr>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/questions/page/','id', 'Id','tag')"></div>
+						</td>
+						<td>Photo</td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/questions/page/','name', 'Content','none')"></div>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/questions/page/','pdfName', 'PDF','none')"></div>
+						</td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/questions/page/','topic', 'Topic','tag')"></div>
+						</td>
+						<td>Enabled</td>
+						<td>Action</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="question : ${questionSet.questions}">
+						<td class="hideable-column">[[${question.id}]]</td>
+						<td></td>
+						<td>[[${question.name}]]</td>
+						<td>[[${question.pdfName}]]</td>
+						<td class="hideable-column">[[${question.topic.name}]]</td>
+						<td><div
+								th:replace="fragments::status('/questions/' +${question.id},'question', ${question.enabled})"></div></td>
+						<td>
+							<div class="mt-2" style="display: flex;">
+								<div
+									th:replace="fragments::edit('/questions/edit/'+ ${question.id},'question')"></div>
+								&nbsp;
+								<div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+										th:userId="${question.id}"
+										th:href="@{'/questions/delete/' + ${question.id}}"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="less-details">
+			<hr class="solid">
+			<div th:each="question : ${questionList}" class="row m-1">
+				<div class="col-4"></div>
+				<div class="col-8">
+					<div>[[${question.name}]]</div>
+					<div>[[${question.topic.name}]]</div>
+					<div class="mt-2 ml-auto" style="display: flex;">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<div
+							th:replace="fragments::status('/questions/' +${question.id},'question', ${question.enabled})"></div>
+						&nbsp;
+						<div
+							th:replace="fragments::edit('/questions/edit/'+ ${question.id},'question')"></div>
+						<div>
+							<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+								th:userId="${question.id}"
+								th:href="@{'/questions/delete/' + ${question.id}}"></a>
+						</div>
+					</div>
+					<hr class="solid">
+				</div>
+
+			</div>
+		</div>
+		<div th:replace="fragments :: pagination('/questions','Questions')"></div>
+
+		<div class="modal fade" id="questionListModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+		<div class="modal fade text-center" id="modalDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle"></h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+			moduleURL = "[[@{/questions-sets}]]";
+
+			$("#buttonCancel").on("click", function() {
+				window.location = "[[@{/questions-sets}]]";
+			});
+
+			function showDialogBoxforExamDuplicate(title, message) {
+
+				$("#modalTitle").text(title);
+				$("#modalBody").text(message);
+				$("#modalDialog").modal("show");
+			}
+		</script>
+
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+			});
+		</script>
+
+
+	</div>
+</div>
+
+</html>

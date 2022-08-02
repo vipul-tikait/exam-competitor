@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" >
+	<div>
+		<h4>Get Admission for Course </h4>
+		<hr class="solid">
+	</div>
+
+	<div>
+		<form th:action="@{/courses/assign}" method="post"
+			style="max-width: 700px; margin: 0 auto;" th:object="${course}"
+			enctype="multipart/form-data"
+			onsubmit="return checkCourseUnique(this);">
+			<input type="hidden" th:field="*{id}">
+			<div class="tab-pane active p-3" id="overview" role="tabpanel">
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${course.name}"
+							readonly />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Course for :</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							th:value="${course.examLevel.exam.mainExam.mainExamType.name} +'  /  '
+							+ ${course.examLevel.exam.mainExam.name}  +'  /  '
+							+ ${course.examLevel.exam.name} +'  /  '
+							+${course.examLevel.name}"
+							readonly />
+					</div>
+				</div>
+				<div class="text-center">
+					<input type="submit" value="Continue to Pay" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+		<hr class="solid">
+
+	</div>
+	<div class="modal fade" id="detailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		moduleURL = "[[@{/courses}]]";
+		$(document).ready(
+				function() {
+					$(".link-delete").on("click", function(e) {
+						e.preventDefault();
+						showDeleteConfirmationModel($(this), 'products');
+					});
+					$(".link-detail").on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetailURL = $(this).attr("href");
+								$("#detailModal").modal("show").find(
+										".modal-content").load(linkDetailURL);
+							});
+				});
+	</script>
+
+
+</div>
+
+
+
+</html>

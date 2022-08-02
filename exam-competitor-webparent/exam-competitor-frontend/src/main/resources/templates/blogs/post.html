@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content">
+	<div class="card m-1">
+			<div class="card-header">
+				<h3>[[${post.title}]]</h3>
+			</div>
+			<div class="card-body">
+				<p class="text-left">
+					<small style="font-style: italic;"> Author :
+						[[${post.user.fullName}]]</small>
+				</p>
+				<!-- 				<p>[[${post.body}]]</p> -->
+<!-- 				<p th:text="${post.body} "></p> -->
+				<div th:utext="${post.body}"></div>
+				<hr class="hr-dash" />
+				<ul class="list-inline list-unstyled">
+					<li><span><i class="fa fa-calendar fa-1"
+							aria-hidden="true"></i> [[${#dates.format(post.creationDate,
+							'yyyy MMM dd, HH:MM:ss')}]]</span></li>
+					<li>|</li>
+
+					<li><span><i class="fa fa-comment"></i>&nbsp;[[${#lists.size(post.comments)}]]
+							Comments</span></li>
+					<!-- <form th:action="@{'/post/' + ${post.id}}" method="get">
+						<button type="submit" class="btn btn-success float-right mb-2">Read More</button>
+					</form> -->
+				</ul>
+			</div>
+		</div>
+
+	<hr class="solid">
+
+	<div class="panel panel-default widget">
+		<div class="panel-heading">
+			<span class="glyphicon glyphicon-comment"></span>
+			<h3 class="panel-title">Recent Comments</h3>
+		</div>
+		<div class="panel-body">
+			<div class="comment" th:each="comment : ${post.comments}">
+				<ul
+					class="list-gr[[${#dates.format(post.creationDate, 'yyyy-MM-dd')}]]oup">
+					<li class="list-group-item">
+						<div class="row">
+							<div class="col-xs-10 col-md-11">
+								<div class="row">
+									<div>
+										By: <a href="#">[[${comment.user.fullName}]]</a> on
+
+
+									</div>
+									<div th:if="${isOwner}">
+										&nbsp;|&nbsp; <a
+											class="fas fa-trash-alt icon-dark link-comment-delete"
+											th:commentId="${comment.id}"
+											th:href="@{'/comment/delete/' + ${comment.id}}"></a>
+									</div>
+								</div>
+								<hr>
+								<div class="comment-text">
+									<h6 th:text="${comment.body}">Body</h6>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="align-center">
+		<a th:href="@{'/comment/{id}'(id=${post.id})}">
+			<button class="green-btn" type="button">Comment Post</button>
+		</a>
+	</div>
+</div>
+
+</html>

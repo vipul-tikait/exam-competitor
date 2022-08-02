@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+	<div class="post">
+
+		<!-- <span class="input-group-text" id="basic-addon1">@</span>
+		<h2 th:text="${post.title}"></h2>
+		 -->
+		<div th:if="${isOwner}">
+
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon1">Title</span>
+				<!-- <div class="align-right" sec:authorize="isAuthenticated()"
+				th:if="${isOwner}">
+			</div> -->
+				<!-- IF CUSTOMER IS ANONYMOUS -->
+				<input type="text" class="form-control" th:value="${post.title}"
+					placeholder="Title" aria-label="Title"
+					aria-describedby="basic-addon1">
+			</div>
+			<div class="input-group">
+				<h6 style="float: left;"
+					th:text="'Published on: ' + ${#dates.format(post.creationDate, 'yyyy MMMM dd')} ">Creation
+					date and by whom</h6>
+				<h6 style="float: right;" th:text="'By: '  + ${post.user.fullName}">Creation
+					date and by whom</h6>
+
+			</div>
+			<!-- <div class="text-left">
+				<img src="" class="rounded" alt="sss">
+			</div> -->
+
+			<!-- 		<p th:text="${post.body}">text Content</p> -->
+			<div class="col-sm-14">
+				<textarea rows="5" name="POST_CONTENT" id="postContent">[[${post.body}]]</textarea>
+			</div>
+			<div class="align-right" sec:authorize="isAuthenticated()"
+				th:if="${isOwner}">
+				<a th:href="@{'/editPost/{id}'(id=${post.id})}">
+					<button class="green-btn blue-btn" type="button">Edit</button>
+				</a>
+			</div>
+		</div>
+		<!-- ELSE -->
+		<div th:unless="${isOwner}">
+			<!-- IF CUSTOMER IS ANONYMOUS -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon1">Title</span> <input
+					type="text" class="form-control" th:value="${post.title}"
+					placeholder="Title" aria-label="Title"
+					aria-describedby="basic-addon1" disabled="disabled">
+			</div>
+			<div class="input-group">
+				<h6 style="float: left;"
+					th:text="'Published on: ' + ${#dates.format(post.creationDate, 'yyyy MMMM dd')} ">Creation
+					date and by whom</h6>
+				<h6 style="float: right;" th:text="'By: '  + ${post.user.fullName}">Creation
+					date and by whom</h6>
+
+			</div>
+			<div class="text-left">
+				<img src="" class="rounded" alt="sss">
+			</div>
+
+			<!-- 		<p th:text="${post.body}">text Content</p> -->
+
+			<div class="m-2">
+				<div th:utext="${post.body}" class="border p-2 m-2"></div>
+			</div>
+			<div class="align-right" sec:authorize="isAuthenticated()"
+				th:if="${isOwner}">
+				<a th:href="@{'/editPost/{id}'+(id=${post.id})}">
+					<button class="green-btn blue-btn" type="button">Edit</button>
+				</a>
+			</div>
+		</div>
+	</div>
+	<hr class="solid">
+
+	<div class="panel panel-default widget">
+		<div class="panel-heading">
+			<span class="glyphicon glyphicon-comment"></span>
+			<h3 class="panel-title">Recent Comments</h3>
+		</div>
+		<div class="panel-body">
+			<div class="comment" th:each="comment : ${post.comments}">
+				<ul
+					class="list-gr[[${#dates.format(post.creationDate, 'yyyy-MM-dd')}]]oup">
+					<li class="list-group-item">
+						<div class="row">
+							<div class="col-xs-10 col-md-11">
+								<div class="row">
+									<div>
+										By: <a href="#">[[${comment.user.fullName}]]</a> on
+
+
+									</div>
+									<div th:if="${isOwner}">
+										&nbsp;|&nbsp; <a
+											class="fas fa-trash-alt icon-dark link-comment-delete"
+											th:commentId="${comment.id}"
+											th:href="@{'/comment/delete/' + ${comment.id}}"></a>
+									</div>
+								</div>
+								<hr>
+								<div class="comment-text">
+									<h6 th:text="${comment.body}">Body</h6>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="align-center">
+		<a th:href="@{'/comment/{id}'(id=${post.id})}">
+			<button class="green-btn" type="button">Comment Post</button>
+		</a>
+	</div>
+</div>
+
+</html>

@@ -1,0 +1,34 @@
+server:
+  port: 18090
+  servlet:
+    context-path: /exam-competitor
+spring:
+  datasource:
+    password: rootpassword
+    url: jdbc:mysql://localhost:3306/exam_competitor_db
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibeernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+      hibernate:
+        format_sql: true
+    show-sql: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 475645084529-rjepbsf67b90fp4j3hbf3rnq4omme32a.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile
+          facebook:
+            client-id: 697565328197015
+            client-secret: 76a5f45c6d018559f8655a1783baf3a3
+            scope:
+            - email
+            - public_profile  

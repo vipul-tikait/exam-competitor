@@ -1,0 +1,183 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+	<!-- <div th:fragment="content" th:remove="tag"> -->
+	<div>
+		<h4>Assign Questions to Question Set</h4>
+		<hr class="solid">
+		<div class="row">
+			<form action="#" th:action="@{/questions-sets/save}" method="post"
+				style="margin: 0 auto;" th:object="${questionSet}"
+				enctype="multipart/form-data" id="saveQueSetForm"
+				onsubmit="return checkEmailUnique(this);">
+
+				<input type="hidden" name="sortField" th:value="${sortField}" /> <input
+					type="hidden" name="sortDir" th:value="${sortDir}" /> <input
+					type="hidden" name="id" th:value="*{id}" />
+				<input type="hidden" name="qSetId" th:value="${qSetId}" id="qSetId"/>
+				
+				<div class="border border-secondary rounded p-3">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Question Set</label>
+						<div class="col-sm-6">[[${questionSet.name}]]</div>
+						
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Topics</label> 
+						<select class="col-sm-4" name="topicId" id="dropdownTopicAtAssignQue">
+							<option value="0">All Topics</option>
+							<th:block th:each="topic : ${listTopicAddMore}">
+								<option th:value="${topic.id}"
+									th:selected="(${topicId} == ${topic.id})">[[${topic.name}]]</option>
+							</th:block>
+						</select>
+						<label class="col-sm-1 col-form-label">Filter</label>
+						<div class="col-sm-3">
+							<input type="search" name="keyword" th:value="${keyword}"
+								class="form-control" />
+						</div>
+						<button type="submit" class="btn btn-primary">
+							<i class="fas fa-search"></i>
+						</button>
+						<button type="button" class="btn btn-secondary"
+							onclick="clearSearch()">
+							<i class="fas fa-eraser"></i>
+						</button>
+					</div>
+				</div>
+				<div class="mt-4 ml-auto">
+					&nbsp;|&nbsp; <a th:href="@{/questions/new}"
+						class="fas fa-user-plus fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+						th:href="@{/questions/export/csv}"
+						class="fas fa-file-csv fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+						th:href="@{/questions/export/excel}"
+						class="fas fa-file-excel fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+						th:href="@{/questions/export/pdf}"
+						class="fas fa-file-pdf fa-2x icon-dark"></a>&nbsp;|&nbsp;
+				</div>
+
+				<div class="full-details">
+					<table
+						class="table table-bordered table-striped table-hover table-responsive-xl">
+						<thead class="table-dark">
+							<tr>
+								<td class="hideable-column">
+
+									<div
+										th:replace="fragments::column_link('/questions/page/','id', 'Id','tag')"></div>
+
+								</td>
+								<td>Photo</td>
+								<td>
+									<div
+										th:replace="fragments::column_link('/questions/page/','name', 'Content','none')"></div>
+								<td class="hideable-column">
+									<div
+										th:replace="fragments::column_link('/questions/page/','pdfName', 'PDF','none')"></div>
+								</td>
+								<td>
+									<div
+										th:replace="fragments::column_link('/questions/page/','topic', 'Topic','tag')"></div>
+								</td>
+								<td>Enabled</td>
+								<td>Action</td>
+							</tr>
+						</thead>
+						<tbody id="qList">
+							<tr th:each="question : ${questionListAddMore}">
+								<td class="hideable-column"><input type="checkbox"
+									class="m-2" th:field="*{questions}" th:value="${question.id}" />
+									[[${question.id}]]</td>
+								<td></td>
+								<td>[[${question.name}]]</td>
+								<td>[[${question.pdfName}]]</td>
+								<td class="hideable-column">[[${question.topic.name}]]</td>
+								<td><div
+										th:replace="fragments::status('/questions/' +${question.id},'question', ${question.enabled})"></div></td>
+								<td>
+									<div class="mt-2" style="display: flex;">
+										<div
+											th:replace="fragments::edit('/questions/edit/'+ ${question.id},'question')"></div>
+										&nbsp;
+										<!-- <div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+										th:userId="${question.id}"
+										th:href="@{'/questions/delete/' + ${question.id}}"></a>
+								</div> -->
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+				<div class="less-details">
+					<hr class="solid">
+					<div th:each="question : ${questionListAddMore}" class="row m-1">
+						<div class="col-4"></div>
+						<div class="col-8">
+							<div>[[${question.name}]]</div>
+							<div>[[${question.topic.name}]]</div>
+							<div class="mt-2 ml-auto" style="display: flex;">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<div
+									th:replace="fragments::status('/questions/' +${question.id},'question', ${question.enabled})"></div>
+								&nbsp;
+								<div
+									th:replace="fragments::edit('/questions/edit/'+ ${question.id},'question')"></div>
+								<div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+										th:userId="${question.id}"
+										th:href="@{'/questions/delete/' + ${question.id}}"></a>
+								</div>
+							</div>
+							<hr class="solid">
+						</div>
+
+					</div>
+				</div>
+
+
+
+				<div
+					th:replace="fragments :: pagination('/questions/assign','Questions')"></div>
+
+
+				<input type="submit" value="Assign" id="buttonSaveQue"
+					class="btn btn-primary m-3">
+
+			</form>
+		</div>
+	</div>
+	<div class="modal fade text-center" id="confirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="confirmText"></span>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-success" id="yesButton">Yes</a>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		function clearSearch() {
+			window.location = "[[@{/questions/page/1?qSetId=0}]]";
+		}
+		
+	</script>
+
+</div>
+<!-- /.container-fluid -->
+</html>

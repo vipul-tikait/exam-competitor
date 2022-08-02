@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+	<div>
+		<h2>Manage Topic | [[${pageTitle}]]</h2>
+	</div>
+
+	<div>
+		<form th:action="@{/topics/save}" method="post"
+			style="max-width: 500px; margin: 0 auto;" th:object="${topic}"
+			onsubmit="return checkUnique(this)" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}">
+			<div class="border border-secondary rounded p-3">
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Topic Name:</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{name}"
+							required="required" minlength="3" maxlength="124">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Alias</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:field="*{alias}"
+							required="required" minlength="3" maxlength="45">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Parent Topic</label>
+					<div class="col-sm-8">
+						<select class="form-control" th:field="*{parent}"
+							required="required">
+							<option value="0">[No Parent]</option>
+							<th:block th:each="topic:${listTopic}">
+								<option th:value="${topic.id}">[[${topic.name}]]</option>
+							</th:block>
+
+						</select>
+					</div>
+				</div>
+				<br>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Image</label>
+					<div class="col-sm-8">
+						<input type="hidden" th:field="*{image}"> <input
+							type="file" id="fileImage" name="topicFileImage"
+							accept="image/png, image/jpeg, image/jpg">
+						<div class="mt-2">
+							<img id="thumbnail" alt="image preview"
+								th:src="@{${topic.topicImagePath}}">
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Enabled</label>
+					<div class="col-sm-8">
+						<input type="checkbox" th:field="*{enabled}" required="required">
+					</div>
+				</div>
+
+				<div class="text-center">
+					<input type="submit" value="Save" class="btn btn-primary m-3">
+					<input type="button" value="Cancel" class="btn btn-secondary"
+						id="buttonCancel">
+				</div>
+
+			</div>
+		</form>
+	</div>
+
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+	
+	moduleURL = "[[@{/topics}]]";
+	
+	function checkUnique(form){
+		topicId= $("#id").val();
+		topicName= $("#name").val();
+		topicAlias= $("#alias").val();
+		csrf = $("input[name='_csrf']").val();
+		
+		url = "[[@{/topics/check_unique}]]";
+		 
+		params = {id: topicId, name:topicName, alias:topicAlias, _csrf:csrf};
+		 
+		$.post(url, params,function(response){
+			 if(response == "OK"){
+				form.submit();
+			 }else if(response == "DuplicateName"){
+				 showDialogBoxforTopicDuplicate("Warning","There is anouther topic having same name "+topicName);
+			 }else if(response == "DuplicateAlias"){
+				 showDialogBoxforTopicDuplicate("Warning","There is anouther topic having same alias "+topicAlias);
+			 }else {
+				 showDialogBoxforTopicDuplicate("Error","There is Unknown response from server");
+			 }
+			 
+		 }).fail(function(){
+			 showDialogBoxforTopicDuplicate("Error","Could not connect to server");
+		 })
+		 
+		 return false;
+	
+	}
+	
+	function showDialogBoxforTopicDuplicate(title, message){
+		 
+		 $("#modalTitle").text(title);
+		 $("#modalBody").text(message);
+		 $("#modalDialog").modal();
+	 }
+ 	</script>
+</div>
+
+
+
+</html>

@@ -1,0 +1,132 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content">
+	<div >
+		<hr class="solid">
+		<div class="justify-content-center" style="display: flex;"><h4>My Courses</h4></div>
+		<hr class="solid">
+		<div class="row">
+			<div th:each="course : ${setCourses}" class="col-sm-5" >
+				<div class="course-box course-col-sm-3 course-bg-box text-white m-2"
+					style="wfont: bold; background-image: linear-gradient(to bottom, #E60000, #000000) !important">
+					
+					<div class="card-header heading-underline">
+						<div class="row">
+							<div class="mx-auto">
+								<h4>
+									<strong><font style="font-size: 0.7em;">[[${course.examLevel.exam.name}]]
+											&nbsp; [[${course.examLevel.name}]]</font></strong>
+								</h4>
+							</div>
+						</div>
+					</div>
+					<div class="card-body course-bg-image">
+
+						<div class="card">
+							<div class="card-header">
+								<div class="justify-content-center" style="display: flex;color: black;">
+									<h5 class="card-title" ><strong><font style="font-size: 1.1em;">[[${course.name}]]
+									</font></strong></h5>
+									&nbsp;<h5 >(<font th:text="${#dates.format(course.startDate, 'MMM-yyyy')}"></font>)</h5>
+								</div>	
+							</div>
+							<div class="card-body">
+								<div th:each="detail : ${course.details}" class="row">
+									<div class="col-sm-2 p-1">
+										<div th:if="${detail.value == 'Y'}">
+											<i class="fas fa-check-circle" style="color: green;"></i>
+										</div>
+										<div th:unless="${detail.value == 'Y'}">
+											<i class="fas fa-times-circle" style="color: red;"></i>
+										</div>
+									</div>
+									<div class="col-sm-10 p-1" style="color: black;">[[${detail.name}]]</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer bg-transparent  p-1">
+							<div class="justify-content-center" style="display: flex;">[[${course.numberOfTest}]]
+								Mock Exams </div>
+							<div class="row">
+								<p class="mx-auto"
+									th:text="${#dates.format(new java.util.Date(course.startDate), 'yyyy-MMM-dd')}"></p>
+								|
+								<p class="mx-auto"
+									th:text="${#dates.format(new java.util.Date(course.endDate), 'yyyy-MMM-dd')}"></p>
+							</div>
+							<div class="justify-content-center" style="display: flex;"><font style="font-size: 1.1em;"> <strong>Total : Rs [[${course.price}]]
+								</strong></font></div>
+						</div>
+						
+						<div class="card-footer bg-transparent border-white p-1">
+							<div class="mt-2 justify-content-center" style="display: flex;">
+							<!-- 	<div
+									th:replace="fragments::status('/courses/' +${course.id},'user', ${course.enabled})"></div>
+								&nbsp;&nbsp;|&nbsp;&nbsp;
+								<div
+									th:replace="fragments::edit('/courses/edit/'+ ${course.id},'user')"></div>
+
+								&nbsp;&nbsp;|&nbsp;&nbsp;
+								<div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-course-delete"
+										th:courseId="${course.id}"
+										th:href="@{'/courses/delete/' + ${course.id}}"></a>
+								</div>-->
+									<!-- <input type="button" onclick="location.href='https://google.com';" class="btn-danger"
+									style="border-radius: 15px; font-size: 1.0em" value="Get Admission" />
+									 -->
+									<!-- <div th:if="${#lists.contains(course.customers.id,  cust.id)}">
+									cvbnjkl
+									</div>
+									<div th:unless="${#lists.contains(course.customers.id, cust.id)}">
+										<a th:href="@{'/courses/details/'+${course.id}}"><button type="button" class="btn btn-danger" style="border-radius: 15px; font-size: 1.0em">Get Admission</button></a>
+									</div> -->
+									 <a th:href="@{'/courses/details/'+${course.id}}"><button type="button" class="btn btn-success" style="border-radius: 15px; font-size: 1.0em">View Question Set</button></a>	 	
+								</div>
+							</div> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- 		<div th:replace="fragments :: pagination('/courses','Courses')"></div> -->
+		<div class="modal fade text-center" id="confirmModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="confirmText"></span>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" id="yesButton">Yes</a>
+						<button type="button" class="btn btn-danger " data-dismiss="modal">No</button>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<script type="text/javascript">
+	
+		$(document).ready(
+				$("#buttonCancel").on("click", function() {
+					window.location = "[[@{/questions-sets}]]";
+				});
+				
+				
+				$("#course-details").on("click", function() {
+					window.location = "[[@{/courses/details/{id}}]]";
+				});
+		});
+	</script>
+
+</div>
+	<!-- /.container-fluid -->
+</html>

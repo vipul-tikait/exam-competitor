@@ -1,0 +1,152 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+
+	<div>
+		<h4>Manage Blogs</h4>
+		<hr class="solid">
+		
+		<div class="row">
+			<div
+				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+				th:replace="fragments::search_form_and_msg('/users/page/1')"></div>
+			<div class="mt-4 ml-auto">
+				&nbsp;|&nbsp; <a th:href="@{/users/new}"
+					class="fas fa-user-plus fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+					th:href="@{/users/export/csv}"
+					class="fas fa-file-csv fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+					th:href="@{/users/export/excel}"
+					class="fas fa-file-excel fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+					th:href="@{/users/export/pdf}"
+					class="fas fa-file-pdf fa-2x icon-dark"></a>&nbsp;|&nbsp;
+			</div>
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="table-dark">
+					<tr>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/blogs/page/','id', 'Id','tag')"></div>
+						</td>
+						<td>Photo</td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/blogs/page/','firstName', 'Title','none')"></div>
+						<td>
+							<div
+								th:replace="fragments::column_link('/blogs/page/','lastName', 'Type','none')"></div>
+						</td>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/users/page/','email', 'Author','tag')"></div>
+						</td>
+						<td>Role</td>
+						<td>Enabled</td>
+						<td>Action</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user : ${userList}">
+						<td class="hideable-column">[[${user.id}]]</td>
+						<td><span th:if="${user.photos == null}"
+							class="fas fa-portrait fa-3x icon-dark"></span> <img
+							th:if="${user.photos != null}"
+							th:src="@{${user.photosImagePath}}" style="width: 100px;">
+						</td>
+						<td>[[${user.firstName}]]</td>
+						<td>[[${user.lastName}]]</td>
+						<td class="hideable-column">[[${user.email}]]</td>
+						<td>[[${user.roles}]]</td>
+						<td><div
+								th:replace="fragments::status('/users/' +${user.id},'user', ${user.enabled})"></div></td>
+						<td>
+							<!-- <div
+								th:replace="fragments::edit('/users/edit/'+ ${user.id},'user')"></div>
+
+							<div th:replace="fragments::delete('/users/delete/'+ ${user.id},'user')"></div>
+								
+							<div class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+								th:userId="${user.id}"
+								th:href="@{'/users/delete/' + ${user.id}}"></div> -->
+							<div class="mt-2" style="display: flex;">
+								<div
+									th:replace="fragments::edit('/users/edit/'+ ${user.id},'user')"></div>
+								&nbsp;
+								<div>
+									<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+										th:userId="${user.id}"
+										th:href="@{'/users/delete/' + ${user.id}}"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<div class="less-details">
+	<hr class="solid">
+		<div th:each="user : ${userList}" class="row m-1">
+			<div class="col-4">
+				<span th:if="${user.photos == null}"
+					class="fas fa-portrait fa-3x icon-dark"></span> <img
+					th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}"
+					style="width: 80px;">
+			</div>
+			<div class="col-8">
+				<div>[[${user.fullName}]]</div>
+				<div>[[${user.roles}]]</div>
+				<div class="mt-2 ml-auto" style="display: flex;">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div
+						th:replace="fragments::status('/users/' +${user.id},'user', ${user.enabled})"></div>
+					&nbsp;
+					<div
+						th:replace="fragments::edit('/users/edit/'+ ${user.id},'user')"></div>
+					<div>
+						<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+							th:userId="${user.id}" th:href="@{'/users/delete/' + ${user.id}}"></a>
+					</div>
+				</div>
+				<hr class="solid">
+			</div>
+			
+		</div>
+	</div>
+
+	<div th:replace="fragments :: pagination('/users','Users')"></div>
+	<div class="modal fade text-center" id="confirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="confirmText"></span>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-success" id="yesButton">Yes</a>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		function clearSearch() {
+			window.location = "[[@{/users}]]";
+		}
+	</script>
+
+</div>
+<!-- /.container-fluid -->
+</html>

@@ -1,0 +1,102 @@
+<nav th:fragment="header"
+	class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+	<!-- Sidebar Toggle (Topbar) -->
+	<button id="sidebarToggleTop"
+		class="btn btn-link d-md-none rounded-circle mr-3">
+		<i class="fa fa-bars"></i>
+	</button>
+<!-- 	<img class="img-fluid" th:src="@{/images/uss-text-logo.png}" style="height: 100%; width: 60%;">		 -->
+<blockquote class="blockquote text-left"  style="  padding-top: 12px;">
+  <h1 class="site-name-font" style="font-family:Georgia, Times New Roman, Times, serif, bold;">[[${SITE_NAME}]]</h1>
+  <footer class="blockquote-footer site-name-font" style="font-size:40%">A friend, philosopher and guide to Civil Services aspirants.</footer>
+</blockquote>
+	<!-- <h1 class="text-fluid " style="height: 100%; width: 60%; font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum 
+viewport width]) / ([maximum viewport width] - [minimum viewport width]))"> </h1>
+	 --><!-- <a
+			class="nav-link d-sm-none"> <h5>Exam Competitor</h5>
+	</a>  -->
+<!-- 	<a class="navbar-brand" th:href="@{/}"> <img width="150"
+				height="40" th:src="@{${SITE_LOGO}}">
+			</a> -->	
+
+	<!-- Topbar Search -->
+	<!-- <form
+		class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+		<div class="input-group">
+			<input type="text" class="form-control bg-light border-0 small"
+				placeholder="Search for..." aria-label="Search"
+				aria-describedby="basic-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-primary" type="button">
+					<i class="fas fa-search fa-sm"></i>
+				</button>
+			</div>
+		</div>
+	</form> -->
+<!-- 	<h2 class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">Exam Competitor</h2> -->
+	
+	<!-- Topbar Navbar -->
+	<ul class="navbar-nav ml-auto">
+
+		<!-- Nav Item - Search Dropdown (Visible Only XS) -->
+		<!-- <li class="nav-item dropdown no-arrow d-sm-none"><a
+			class="nav-link dropdown-toggle" href="#" id="searchDropdown"
+			role="button" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="false"> <i class="fas fa-search fa-fw"></i>
+		</a> Dropdown - Messages
+			<div
+				class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+				aria-labelledby="searchDropdown">
+				<form class="form-inline mr-auto w-100 navbar-search">
+					<div class="input-group">
+						<input type="text" class="form-control bg-light border-0 small"
+							placeholder="Search for..." aria-label="Search"
+							aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<button class="btn btn-primary" type="button">
+								<i class="fas fa-search fa-sm"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div></li>
+ -->
+		 
+
+		<!-- Nav Item - Messages -->
+		
+
+		 <div class="topbar-divider d-none d-sm-block"></div>
+
+		<!-- Nav Item - User Information -->
+		<li class="nav-item dropdown no-arrow"><a
+			class="nav-link dropdown-toggle" href="#" id="userDropdown"
+			role="button" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="false"> 
+			<span
+				class="mr-2 d-none d-lg-inline text-gray-600 small" th:text ="${#authentication.getPrincipal().getFullname()}">
+				</span> 
+			<img class="img-profile rounded-circle"
+				th:src="@{${#authentication.getPrincipal().getPhotosImagePath()}}">
+		</a> <!-- Dropdown - User Information -->
+			<div
+				class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+				aria-labelledby="userDropdown">
+				<a class="dropdown-item" th:href="@{/account}"> <i
+					class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i> Profile
+				</a> <!-- <a class="dropdown-item" href="#"> <i
+					class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Settings
+				</a> <a class="dropdown-item" href="#"> <i
+					class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> Activity
+					Log
+				</a> -->
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" id="logoutLink" href="document.logoutForm.submit();"> <i
+					class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+					Logout
+				</a>
+			</div></li>
+
+	</ul>
+</nav>

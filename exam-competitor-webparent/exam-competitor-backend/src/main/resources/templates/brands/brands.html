@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head
+	th:replace="fragments :: page_head('Brands - Zoopkan Daily Admin', 'none')" />
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div>
+		<div>
+			<h2>Manage Brands</h2>
+
+
+			<a th:href="@{/brands/new}"
+				class="fas fa-folder-plus fa-2x icon-dark"> </a> 
+				
+				&nbsp;|&nbsp; 
+			<a
+				th:href="@{'/brands/export/csv/'+${currentPage}+'?sortDir='+${reverseSortDir}+'&sortField='+${sortField}+${keyword !=null?'&keyword='+keyword:''}}"
+				class="fas fa-file-csv fa-2x icon-dark"></a>
+				
+				<!-- <a
+				th:href="@{'/brands/export/csv/'+${currentPage}}"
+				class="fas fa-file-csv fa-2x icon-dark"> </a>
+ -->
+			<div th:replace="fragments::search_form_and_msg('/brands/page/1')"></div>
+
+			<div class="full-details">
+				<table
+					class="table table-bordered table-striped table-hover table-responsive-xl">
+					<thead class="table-dark">
+						<tr>
+							<td>Brand ID</td>
+							<td>Logo</td>
+							<!-- 							s<td th:replace="fragments::column_link('/brands/page/', 'name', 'Brand Name', 'none')"/> -->
+							<td><a class="text-white"
+								th:href="@{'/brands/page/'+${currentPage}+'?sortDir='+${reverseSortDir}+'&sortField='+${sortField}+${keyword !=null?'&keyword='+keyword:''}}">Brands
+									Name</a> <span
+								th:class="${reverseSortDir == 'desc'? 'fas fa-sort-down': 'fas fa-sort-up'}"></span>
+
+							</td>
+
+							<td>Categories</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="brand : ${listBrands}">
+							<td class="hideable-column">[[${brand.id}]]</td>
+							<td><span th:if="${brand.logo == null}"
+								class="fas fa-portrait fa-3x icon-dark"></span> <image
+									th:if="${brand.logo != null}"
+									th:src="@{${brand.brandImagePath}}" style="width: 150px;" /></td>
+							<td>[[${brand.name}]]</td>
+							<td><th:block th:each="cat:${brand.categories}">
+									<span class="badge badge-secondary" th:text="${cat.name}"></span>
+								</th:block></td>
+							<td>
+								<div
+									th:replace="fragments::edit('/brands/edit/'+${brand.id},'brand')"></div>
+								<a class="fas fa-trash-alt fa-2x icon-dark link-brand-delete"
+								th:brandId="${brand.id}"
+								th:href="@{'/brands/delete/' + ${brand.id}}"> </a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="less-details">
+			<div th:each="brand : ${listBrands}" class="row m-1">
+				<div class="col-4">
+					<span th:if="${brand.logo == null}"
+						class="fas fa-portrait fa-3x icon-dark"></span> <img
+						th:if="${brand.logo != null}"
+						th:src="@{${brand.brandImagePath}}" style="width: 100px;">
+				</div>
+				<div class="col-8">
+					<div>[[${brand.name}]]</div>
+					<div class="mt-2">
+						<a
+							class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/brands/edit/' +${brand.id}}"
+							title="Edit brand data"></a>
+						<a class="fas fa-trash-alt fa-2x icon-dark link-brand-delete"
+								th:brandId="${brand.id}"
+								th:href="@{'/brands/delete/' + ${brand.id}}"> </a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</div>
+
+		<div class="modal fade text-center" id="confirmModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="confirmText"></span>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" id="yesButton">Yes</a>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div th:replace="fragments :: pagination('/brands','brands')"></div>
+		<div th:replace="fragments :: footer"></div>
+	</div>
+	<script th:src="@{/js/common_list.js}"></script>
+	<script type="text/javascript">
+	moduleUrl = "[[@{/brands}]]"
+	
+	$(document).ready(function(){
+		$(".link-delete").on("click", function(e){
+			e.preventDefault();
+			showDeleteConfirmationModel($(this),'brands');
+		});
+	});
+	function clearSearch() {
+		window.location = "[[@{/brands}]]";
+	}
+
+		
+	</script>
+</body>
+</html>

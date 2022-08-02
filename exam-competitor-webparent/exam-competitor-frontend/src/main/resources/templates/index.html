@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Home - Zoopkan Daily','none')"/>
+<body>
+	<div class="container-fluid">
+		<div th:replace="fragments/menu :: menu"></div>
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		<div>
+			 <h1>Welcome Zoopkan Daily</h1>
+		</div>
+		<div th:replace="fragments/footer :: footer"></div>
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		 $("#logoutLink").on("click",function(e){
+			 e.preventDefault();
+			 document.logoutForm.submit();
+		 });
+	});
+	</script>
+</body>
+</html>

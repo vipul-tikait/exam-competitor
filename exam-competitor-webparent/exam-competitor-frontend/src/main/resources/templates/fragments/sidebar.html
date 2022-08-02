@@ -1,0 +1,134 @@
+<div th:fragment="sidebar">
+	<div id="mySidebar" class="sidebar border">
+		<a href="javascript:void(0)" onclick="closeNav()">
+			<button type="button" class="close" aria-label="Close">
+				<span aria-hidden="true" style="color: white;">x</span>
+			</button>
+		</a>
+		<!-- IF CUSTOMER IS ANONYMOUS -->
+		<!-- <div th:if="${#authentication.getPrincipal()==null}">
+		   <div>Welcome, Guest</div>
+		</div>
+		ELSE
+		<div th:unless="${#authentication.getPrincipal().}">
+		   <div th:text=" 'Hi,' + ${customer.name}">Hi, User</div>
+		</div>  -->
+		<th:block sec:authorize="isAuthenticated()">
+			<a href="#" style=""> <img class="img-fluid img-profile rounded-circle  m-1"
+				th:src="@{${#authentication.getPrincipal().getPhotosImagePath()}}"><br>
+				<span class="mr-2 d-none d-lg-inline text-gray-600 m-1"
+				th:text="${#authentication.getPrincipal().getFullName()}"> </span> <!-- 			<span th:text="${#authentication.getPrincipal().getFirstName()}"></span> -->
+			</a>
+		</th:block>
+
+		<hr class="solid" style="border: 1px solid #818181;">
+		<a th:href="@{/customers/courses}">MY COURSES</a> 
+		<hr class="solid" style="border: 1px solid #818181;">
+		<!-- <a href="#">Services</a> 
+		<hr class="solid" style="border: 1px solid #818181;">
+		<a href="#">Clients</a>
+		<hr class="solid" style="border: 1px solid #818181;">
+		<a href="#">Contact</a>
+		<hr class="solid" style="border: 1px solid #818181;"> -->
+		<a class="dropdown-item" id="logoutLink" href="document.logoutForm.submit();"> <i
+					class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+					Logout
+				</a>
+		
+	</div>
+
+
+	<!-- <div class="col-md">
+		
+		<th:block sec:authorize="isAuthenticated()">
+			<form th:action="@{/logout}" method="post" th:hidden="true"
+				name="logoutForm">
+				<input type="submit" value="Logout" />
+			</form>
+		</th:block>
+		<div class="side-bar">
+			<header>
+				<div class="close-btn">
+
+					<i class="fas fa-times"></i>
+				</div>
+				<img
+					src="https://lh3.googleusercontent.com/a-/AOh14Gj99VObFyE8W_h8RrcwZO_aYiIHu5AAa_XpnOym=s600-k-no-rp-mo"
+					alt="">
+				<h1>Mystery Code</h1>
+			</header>
+			<div class="menu">
+				<div class="item">
+					<a href="#"><i class="fas fa-desktop"></i>Dashboard</a>
+				</div>
+				<div class="item">
+					<a class="sub-btn"><i class="fas fa-table"></i>Tables<i
+						class="fas fa-angle-right dropdown"></i></a>
+					<div class="sub-menu">
+						<a href="#" class="sub-item">Sub Item 01</a> <a href="#"
+							class="sub-item">Sub Item 02</a> <a href="#" class="sub-item">Sub
+							Item 03</a>
+					</div>
+				</div>
+				<div class="item">
+					<a href="#"><i class="fas fa-th"></i>Forms</a>
+				</div>
+				<div class="item">
+					<a class="sub-btn"><i class="fas fa-cogs"></i>Settings<i
+						class="fas fa-angle-right dropdown"></i></a>
+					<div class="sub-menu">
+						<a href="#" class="sub-item">Sub Item 01</a> <a href="#"
+							class="sub-item">Sub Item 02</a>
+					</div>
+				</div>
+				<div class="item">
+					<a href="#"><i class="fas fa-info-circle"></i>About</a>
+				</div>
+			</div>
+		</div>
+		<section class="main">
+			<h1>
+				Sidebar Menu With<br>Sub-Menus
+			</h1>
+		</section>
+
+		<nav class="navbar navbar-expand-sm bg-light">
+			<div class="collapse navbar-collapse" id="searchNavbar">
+				<form class="form-inline" th:action="@{/search}" method="get">
+						<input type="search" name="keyword" class="form-control mr-sm-2"
+							th:value="${searchKeyword}" placeholder="keyword" required /> <input
+							type="submit" value="Search" class="btn btn-outline-success" />
+						</form>
+				<ul class="navbar-nav">
+					<th:block sec:authorize="isAuthenticated()">
+						<li class="nav-item"><b><a class="nav-link"
+								th:href="@{/account_details}"
+								sec:authentication="principal.fullName"></a></b></li>
+
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/address_book}">Address Book</a></li>
+
+						<li class="nav-item"><a class="nav-link" href="">Questions</a>
+						</li>
+
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/reviews}">Reviews</a></li>
+
+						<li class="nav-item"><a class="nav-link" th:href="@{/orders}">Orders</a></li>
+
+						<li class="nav-item"><a
+							class="nav-link fas fa-shopping-cart fa-2x" th:href="@{/cart}"></a>
+						</li>
+
+						<li class="nav-item"><a class="nav-link"
+							href="javascript:document.logoutForm.submit()">Logout</a></li>
+
+					</th:block>
+				</ul>
+
+			</div>
+		</nav>
+	</div>
+ -->
+
+</div>

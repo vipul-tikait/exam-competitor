@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+
+	<div>
+		<h4>Courses Type</h4>
+		<hr class="solid">
+		<div class="row">
+			<div
+				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+				th:replace="fragments::search_form_and_msg('/courses/type/page/1')"></div>
+			<div class="mt-4 ml-auto">
+				&nbsp;|&nbsp; <a th:href="@{/courses/type/new}"
+					class="fas fa-user-plus fa-2x icon-dark"></a> &nbsp;|&nbsp;
+			</div>
+		</div>
+		<div class="row m-2">
+			<div th:each="courseType : ${courseTypeList}">
+
+				<div class="card border-dark m-2" style="max-width: 18rem;">
+					<a class="card-block stretched-link text-decoration-none" th:href="@{'/courses/'+${courseType.id}}">
+
+						<div class="card-header text-white bg-dark">COURSE TYPE</div>
+						<div class="card-body bg-light  mx-auto">
+							<h5 class="card-title">[[${courseType.name}]]</h5>
+						</div>
+					</a>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+<!-- /.container-fluid -->
+</html>
