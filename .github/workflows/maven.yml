@@ -61,7 +61,7 @@ jobs:
           
       - name: Set up Kustomize   
         run: |-
-          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v4.5.7/kustomize_v4.5.7_latest
+          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v4.5.7/kustomize_v4.5.7_linux_arm64.tar.gz
           chmod u+x ./kustomize
           
       - name: Deploy Image to GKE cluster
