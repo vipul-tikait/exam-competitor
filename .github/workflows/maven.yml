@@ -9,7 +9,7 @@ on:
 env:
   PROJECT_ID: ${{secrets.USS_GKE_PROJECT}}    
   GKE_CLUSTER: uss-github-actions-gke-dev
-  GKE_ZONE: us-central1-a
+  GKE_ZONE: us-central1
   DEPLOYMENT_NAME: uss-backend-github-actions-gke-deployment
   IMAGE: uss-backend-github-actions-gke-image
   TAG: 1.0.0
