@@ -53,7 +53,7 @@ jobs:
           
       - name: Build Docker Image
         run: |-
-          docker build --tag "gcr.io/$PROJECT_ID/$IMAGE:$TAG" .Dockerfile
+          docker build --tag "gcr.io/$PROJECT_ID/$IMAGE:$TAG" ../../Dockerfile
           
       - name: Pubish Docker Image to GCR
         run: |-
