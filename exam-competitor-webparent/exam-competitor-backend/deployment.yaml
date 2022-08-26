@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: uss-backend-github-actions-gke-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uss-backend-github-actions-gke
+  template:
+    metadata:
+      labels: 
+        app: uss-backend-github-actions-gke
+    spec:
+      containers:
+        - name: app
+          image:  gcr.io/PROJECT_ID/IMAGE:TAG
+          imagePullPolicy: Alwys
