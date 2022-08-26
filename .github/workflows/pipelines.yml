@@ -5,6 +5,7 @@ on:
     branches:
       - main
       
+      
 env:
   PROJECT_ID: ${{secrets.USS_GKE_PROJECT}}    
   GKE_CLUSTER: uss-github-actions-gke-dev
