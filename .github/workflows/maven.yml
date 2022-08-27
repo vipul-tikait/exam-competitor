@@ -74,8 +74,8 @@ jobs:
       - name: Update deploy image
         working-directory: deploy
         run: |-
+          cat exam-competitor-webparent/exam-competitor-backend 
           kustomize edit set image gcr.io/$PROJECT_ID/$IMAGE:$TAG
-          cat exam-competitor-webparent/exam-competitor-backend/kustomization.yaml
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/${DEPLOYMENT_NAME}
           kubectl get services -o wide
