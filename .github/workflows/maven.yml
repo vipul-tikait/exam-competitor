@@ -94,5 +94,5 @@ jobs:
       - name: Deploy
         run: |-
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$TAG
-          kubectl apply -k .
+          kubectl apply -k ./exam-competitor-webparent/exam-competitor-backend/s
           kubectl rollout status deployment $IMAGE
