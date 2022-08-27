@@ -94,6 +94,6 @@ jobs:
       - name: Deploy
         run: |-
           kubectl config set-context --current --namespace=$GKE_CLUSTER
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$IMAGE:$GKE_CLUSTER-$TAG
+          kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$TAG
           kubectl apply -k .
           kubectl rollout status deployment $IMAGE
