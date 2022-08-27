@@ -91,8 +91,16 @@ jobs:
 #          kubectl set image deployment dep1 dep1="gcr.io/$PROJECT_ID/$IMAGE:$TAG"
 
 
+#      - name: Deploy
+#        run: |-
+#          kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$TAG
+#          kubectl apply -k ./exam-competitor-webparent/exam-competitor-backend/
+#          kubectl rollout status deployment $IMAGE
+
+      # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |-
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$TAG
-          kubectl apply -k ./exam-competitor-webparent/exam-competitor-backend/
-          kubectl rollout status deployment $IMAGE
+          ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
+          ./kustomize build ~/exam-competitor-webparent/exam-competitor-backend | kubectl apply -f -
+          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl get services -o wide
