@@ -100,8 +100,7 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: Set up Kustomize
         run: |-
-          curl -sLO "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.5.5/kustomize_v4.5.5_linux_arm64.tar.gz" && 
-          curl -sL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.5.5/checksums.txt" -o kustomize.checksums.txt
+          curl -sLO "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.5.5/kustomize_v4.5.5_linux_arm64.tar.gz" 
           chmod u+x ./kustomize
      
 #          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.5.5/kustomize_v4.5.5_linux_amd64
