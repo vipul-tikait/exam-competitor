@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - exam-competitor-webparent/exam-competitor-backend/deployment.yaml
-  - service.yaml
+  - exam-competitor-webparent/exam-competitor-backend/service.yaml
