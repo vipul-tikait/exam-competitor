@@ -15,5 +15,5 @@ spec:
       containers:
         - name: app
           image:  gcr.io/PROJECT_ID/IMAGE:TAG
-          imagePullPolicy: Alawys
+          imagePullPolicy: Always
           
