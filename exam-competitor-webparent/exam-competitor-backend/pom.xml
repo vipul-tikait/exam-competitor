@@ -58,15 +58,7 @@
 			<artifactId>openpdf</artifactId>
 			<version>1.3.8</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-		</dependency> -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+		
 	
 	</dependencies>
 
