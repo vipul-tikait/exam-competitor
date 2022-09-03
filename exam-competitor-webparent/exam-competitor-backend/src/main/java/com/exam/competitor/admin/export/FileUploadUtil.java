@@ -1,6 +1,5 @@
 package com.exam.competitor.admin.export;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -9,8 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import org.springframework.web.multipart.MultipartFile;
-
-import ch.qos.logback.classic.Logger;
 
 public class FileUploadUtil {
 	

@@ -11,7 +11,7 @@
 	</div>
 
 	<div>
-		<form th:action="@{/courses/save}" method="post"
+		<form th:action="@{/courses/assign}" method="post"
 			style="max-width: 700px; margin: 0 auto;" th:object="${course}"
 			enctype="multipart/form-data"
 			onsubmit="return checkCourseUnique(this);">

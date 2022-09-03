@@ -3,8 +3,8 @@ package com.exam.competitor.admin;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class QuestionSetRepositoryTests {
 		Question question1 = entityManager.find(Question.class, 1);
 		Question question2 = entityManager.find(Question.class, 2);
 
-		Set<Question> qlist = new HashSet<>();
+		List<Question> qlist = new ArrayList<>();
 
 		qlist.add(question1);
 		qlist.add(question2);

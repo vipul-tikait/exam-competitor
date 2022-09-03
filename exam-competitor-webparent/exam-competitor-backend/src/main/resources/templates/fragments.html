@@ -1,63 +1,85 @@
-<!DOCTYPE html>
+<!DOCTYPE html>	
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="page_head(title,remove)" th:remove="${remove}">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport"
-		content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
-	<title>[[${title}]]</title>
-	<link rel="stylesheet" type="text/css"
-		th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-	<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
-	<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
-	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-	<script type="text/javascript"
-		th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+<title>[[${title}]]</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 	<div th:fragment="column_link(page, fieldName, columnLabel, removeTag)"
 		th:remove="${removeTag}">
 		<a class="text-white"
-		th:href="@{${page} +${currentPage} + '?sortField='+${fieldName}+'&sortDir='+${revSortDir}+  ${keyword != null? '&keyword=' +keyword :''}+${categoryId != null? '&categoryId=' +categoryId:''}}">
-			[[${columnLabel}]] </a> 
-		<span th:if="${sortField == fieldName}" th:class="${sortDir == 'asc'? 'fas fa-sort-up': 'fas fa-sort-down'}"></span>
+			th:href="@{${page} +${currentPage} + '?sortField='+${fieldName}+'&sortDir='+${revSortDir}+  ${keyword != null? '&keyword=' +keyword :''}+${categoryId != null? '&categoryId=' +categoryId:''}}">
+			[[${columnLabel}]] </a> <span th:if="${sortField == fieldName}"
+			th:class="${sortDir == 'asc'? 'fas fa-sort-up': 'fas fa-sort-down'}"></span>
 	</div>
-	<div th:fragment="status(moduleUrl,entityName,enabled)">
+	<div th:fragment="flag(moduleUrl,entityName,enabled)">
 		<a th:if="${enabled == true}"
 			class="fas fa-check-circle fa-2x icon-green"
 			th:href="@{${moduleUrl}+ '/enabled/false'}"
-			title="'Disable the'+${entityName}"> </a> 
-		<a
+			title="'Disable the'+${entityName}"> </a> <a
 			th:if="${enabled == false}" class="fas fa-circle fa-2x icon-silver"
 			th:href="@{${moduleUrl} + '/enabled/true'}"
-			
 			title="'Enabled the'+${entityName}"> </a>
 	</div>
+	<div th:fragment="status(moduleUrl,entityName,status)">
+		<th:block th:if="${status == null}">
+			<div class="row justify-content-center">
+				<a class="fas fa-check-circle fa-2x icon-silver"
+					th:href="@{${moduleUrl}+ '/status/accepted'}"
+					title="'Disable the'+${entityName}"> </a> <a
+					class="fas fa-times-circle fa-2x icon-silver"
+					th:href="@{${moduleUrl} + '/status/rejected'}"
+					title="'Enabled the'+${entityName}"> </a>
+			</div>
+		</th:block>
+		<th:block th:if="${status == 'accepted'}">
+			<div class="row justify-content-center">
+				<a class="fas fa-check-circle fa-2x icon-green" href="#"> </a> <a
+					class="fas fa-times-circle fa-2x icon-silver"
+					th:href="@{${moduleUrl} + '/status/rejected'}" title="Reject">
+				</a>
+			</div>
+		</th:block>
+		<th:block th:if="${status == 'rejected'}">
+			<div class="row justify-content-center">
+				<a class="fas fa-check-circle fa-2x icon-silver"
+					th:href="@{${moduleUrl}+ '/status/accepted'}"
+					title="'Disable the'+${entityName}"> </a> 
+					<a href="#"
+					class="fas fa-times-circle fa-2x icon-red"> </a>
+			</div>
+		</th:block>
+
+	</div>
+
 	<div th:fragment="assign(ent1,ent2,entityName,enabled)">
 		<a th:if="${enabled == true}"
 			class="fas fa-check-circle fa-2x icon-green"
 			th:href="@{${ent1}+ '/assign/'+${ent2}+'/false'}"
-			title="'Disable the'+${ent2}"> </a> 
-		<a
-			th:if="${enabled == false}" class="fas fa-circle fa-2x icon-silver"
+			title="'Disable the'+${ent2}"> </a> <a th:if="${enabled == false}"
+			class="fas fa-circle fa-2x icon-silver"
 			th:href="@{${ent1} + '/assign/'+${ent2}+'/true'}"
-			
 			title="'Enabled the'+${ent2}"> </a>
 	</div>
 	<div th:fragment="assignQset(moduleUrl,assigned)">
-		<a th:if="${assigned == true}"
-			class="fas fa-circle fa-2x icon-silver"
-			th:href="@{${moduleUrl}+ '/true'}"
-			title="Assign the Qset"> </a> 
-		<a
-			th:if="${assigned == false}" class="fas fa-times-circle fa-2x icon-red"
-			th:href="@{${moduleUrl} + '/false'}"
-			
-			title="Remove the Qset"> </a>
+		<a th:if="${assigned == true}" class="fas fa-circle fa-2x icon-silver"
+			th:href="@{${moduleUrl}+ '/true'}" title="Assign the Qset"> </a> <a
+			th:if="${assigned == false}"
+			class="fas fa-times-circle fa-2x icon-red"
+			th:href="@{${moduleUrl} + '/false'}" title="Remove the Qset"> </a>
 	</div>
 	<div th:fragment="edit(moduleUrl,entityName)">
-		<a class="fas fa-edit fa-2x icon-green" 
-		th:href="@{${moduleUrl}}"
+		<a class="fas fa-edit fa-2x icon-green" th:href="@{${moduleUrl}}"
 			title="Edit this data"></a>
 	</div>
 	<div th:fragment="footer" class="text-center m-3">
@@ -79,8 +101,8 @@
 	</div>
 	<div th:fragment="topic_actions" th:remove="tag">
 		<a class="fas fa-edit fa-2x icon-green"
-			th:href="@{'/topics/edit/' + ${topic.id}}"
-			title="Edit Topic data"> </a> &nbsp;
+			th:href="@{'/topics/edit/' + ${topic.id}}" title="Edit Topic data">
+		</a> &nbsp;
 		<th:block th:if="${topic.hasChildren == false}">
 			<a class="fas fa-trash fa-2x icon-dark link-topic-delete"
 				th:entityId="${topic.id}"
@@ -173,7 +195,8 @@
 			<input type="hidden" name="sortField" th:value="${sortField}" /> <input
 				type="hidden" name="sortDir" th:value="${sortDir}" /> Filter:&nbsp;
 			<input type="search" name="keyword" th:value="${keyword}"
-				class="form-inline mr-auto w-128 navbar-search" required /> &nbsp;&nbsp;
+				class="form-inline mr-auto w-128 navbar-search" required />
+			&nbsp;&nbsp;
 			<button type="submit" value="" class="btn btn-primary">
 				<i class="fas fa-search"></i>
 			</button>

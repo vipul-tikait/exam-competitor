@@ -24,7 +24,6 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.exam.competitor.admin.common.entity.Customer;
-import com.exam.competitor.admin.common.entity.Topic;
 import com.exam.competitor.admin.common.entity.exam.ExamLevel;
 
 @Entity

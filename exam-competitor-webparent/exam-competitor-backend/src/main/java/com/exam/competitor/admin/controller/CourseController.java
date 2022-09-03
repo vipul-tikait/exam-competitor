@@ -126,8 +126,8 @@ public class CourseController {
 		// course.setStartDate(new Date());
 		// course.setEndDate(new Date());
 
-		/*
-		 * int courseId = courseService.getMaxCourseId(); String date =
+		/*int courseId = courseService.getMaxCourseId();
+		 *  String date =
 		 * course.getStartDate().getYear() + "_" + course.getStartDate().getMonth();
 		 * 
 		 * String courseCode = date + "_" + course.getDuration() + "TEST_" + courseId;

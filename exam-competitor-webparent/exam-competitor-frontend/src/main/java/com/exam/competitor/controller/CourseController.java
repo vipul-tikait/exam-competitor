@@ -60,6 +60,7 @@ public class CourseController {
 		model.addAttribute("revSortDir", revSortDir);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("cust", cust);
+		model.addAttribute("custId", cust.getId());
 		return "courses/courses_list";
 
 	}

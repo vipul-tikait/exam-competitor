@@ -1,0 +1,230 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content" class="container-fluid">
+
+	<div>
+		<h4>Manage Attempts</h4>
+		<hr class="solid">
+		<div class="row">
+			<form th:action="@{/attempts/page/1}" class="form-inline m-3"
+				id="searchAttemptsForm">
+				<input type="hidden" name="sortField" th:value="${sortField}" /> <input
+					type="hidden" name="sortDir" th:value="${sortDir}" />
+
+				&nbsp;Filter:&nbsp; <input type="search" name="keyword"
+					th:value="${keyword}" class="form-control" required />
+				&nbsp;&nbsp;
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-search"></i>
+				</button>
+				&nbsp;&nbsp;
+				<button type="button" class="btn btn-secondary"
+					onclick="clearSearch()">
+					<i class="fas fa-eraser"></i>
+				</button>
+			</form>
+			<!-- <div
+				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+				th:replace="fragments::search_form_and_msg('/questions/page/1')"></div>
+			 -->
+			<div class="mt-4 ml-auto">
+				&nbsp;|&nbsp; <a th:href="@{/attempts/new}"
+					class="fas fa-user-plus fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+					th:href="@{/attempts/export/csv}"
+					class="fas fa-file-csv fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+					th:href="@{/attempts/export/excel}"
+					class="fas fa-file-excel fa-2x icon-dark"></a> &nbsp;|&nbsp; <a
+					th:href="@{/attempts/export/pdf}"
+					class="fas fa-file-pdf fa-2x icon-dark"></a>&nbsp;|&nbsp;
+			</div>
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="table-dark">
+					<tr>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/attempts/page/','id', 'Id','tag')"></div>
+						</td>
+						<td><div
+								th:replace="fragments::column_link('/attempts/page/','course', 'Course','none')"></div></td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/attempts/page/','question', 'Question','none')"></div>
+						</td>
+						<td>
+							<div
+								th:replace="fragments::column_link('/attempts/page/','questionPdfName', 'Que PDF','none')"></div>
+						</td>
+						<td class="hideable-column">
+							<div
+								th:replace="fragments::column_link('/attempts/page/','answeredPdfName', 'Ans PDF','none')"></div>
+						</td>
+						<td>Cust ID</td>
+						<td>Moderator</td>
+						<td>Eval. PDF</td>
+						<th:block sec:authorize="hasAuthority('Admin')">
+							<td>Status</td>
+							<td>Action</td>
+						</th:block>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="attempt,iterStat  : ${attemptList}">
+						<td class="hideable-column">[[${attempt.id}]]</td>
+						<td>[[${attempt.course.name}]]</td>
+						<td>[[${attempt.question.name}]]</td>
+						<td>
+							<div th:if="${attempt.question.questionPdfName != null}">
+								<a th:href="@{'/questions/file/'+${attempt.question.id}}"><i
+									class="fas fa-solid fa-file-pdf"></i></a>
+							</div>
+						</td>
+						<td>
+							<div th:if="${attempt.answeredPdfName != null}">
+								<a th:href="@{'/attempts/answered/file/'+${attempt.id}}"><i
+									class="fas fa-solid fa-file-pdf"></i></a>
+							</div>
+						</td>
+						<td>[[${attempt.customer.id}]]</td>
+						<td><select class="form-control"
+							th:id="'selectModarator'+${attempt.id}">
+								<th:block th:if="${attempt.user != null}">
+									<option th:each="user : ${moderatorList}"
+										th:selected="(${attempt.user.id} == ${user.id})"
+										th:readonly="(${attempt.user.id} == ${user.id})"
+										th:value="${user.id}">[[${user.firstName}]]
+										[[${user.lastName}]]</option>
+								</th:block>
+								<th:block th:unless="${attempt.user != null}">
+									<option th:each="user : ${moderatorList}" th:value="${user.id}">[[${user.firstName}]]
+										[[${user.lastName}]]</option>
+								</th:block>
+						</select></td>
+						<td>
+							<div th:if="${attempt.evaluatedPdfName != null}">
+								<a th:href="@{'/attempts/evaluated/file/'+${attempt.id}}"><i
+									class="fas fa-solid fa-file-pdf"></i></a>
+							</div>
+							<div th:unless="${attempt.evaluatedPdfName != null}">	
+								<div class="input-group">
+									<div class="custom-file">
+										<input type="file" id="fileupload" name="fileupload" accept="application/pdf">
+									</div>
+									<div class="input-group-append">
+										<button class="btn btn-outline-secondary" type="button"
+											id="upload-button"
+											th:onclick="'return uploadEvaluatedPdf('+${attempt.id}+');'">
+											<i class="fas fa-file-upload"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</td>
+						<th:block sec:authorize="hasAuthority('Admin')">
+
+							<td><div th:replace="fragments::status('/attempts/' +${attempt.id},'attempt',${attempt.status})"></div></td>
+							<td>
+								<div class="mt-2" style="display: flex;">
+									<!-- <form th:action="@{/attempts/assign/moderator}" method="post"
+									style="margin: 0 auto;" th:object="${attempt}"
+									enctype="multipart/form-data" id="assignAttemptToModeratorForm"> -->
+									<input type="hidden" th:id="'attempt'+${attempt.id}"
+										th:value="${attempt.id}" /> 
+									<th:block th:if="${attempt.user != null}">
+										<input type="hidden"
+										name="moderatorId" th:value="${attempt.user.id}" />
+									
+										<button type="button" class="btn btn-secondary"
+											style="font-size: 0.8em; border-radius: 5PX; width: 100%;"
+											th:onclick="'return checkModeratorSelected('+${attempt.id}+');'">
+											Re-Assign</button>
+									</th:block>
+									<th:block th:unless="${attempt.user != null}">
+										<button type="button" class="btn btn-success"
+											style="font-size: 0.8em; border-radius: 5PX; width: 100%;"
+											th:onclick="'return checkModeratorSelected('+${attempt.id}+');'">
+											Assign</button>
+									</th:block>
+									<!-- 								</form> -->
+								</div>
+							</td>
+						</th:block>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<div class="less-details">
+		<hr class="solid">
+		<div th:each="attempt : ${attemptList}" class="row m-1">
+			<div class="col-4"></div>
+			<div class="col-8">
+				<div>[[${attempt.id}]]</div>
+				<div th:if="${attempt.question.questionPdfName != null}">
+					<a th:href="@{'/attempts/file/'+${attempt.id}}"><i
+						class="fas fa-solid fa-file-pdf"></i></a>
+				</div>
+				<div th:if="${attempt.answeredPdfName != null}">
+					<a th:href="@{'/attempts/answered/file/'+${attempt.id}}"><i
+						class="fas fa-solid fa-file-pdf"></i></a>
+				</div>
+				<div>
+					<select class="form-control" th:each="user : ${moderatorList}">
+						<option value="-1">Select Moderator</option>
+						<option th:value="${user.id}">[[${user.firstName}]]
+							[[${user.lastName}]]</option>
+					</select>
+				</div>
+				<div class="mt-2 ml-auto" style="display: flex;">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div
+						th:replace="fragments::status('/attempts/' +${attempt.id},'attempt', ${attempt.status})"></div>
+					&nbsp;
+					<div>
+						<a class="fas fa-trash-alt fa-2x icon-dark link-user-delete"
+							th:userId="${attempt.id}"
+							th:href="@{'/attempts/delete/' + ${attempt.id}}"></a>
+					</div>
+				</div>
+				<hr class="solid">
+			</div>
+
+		</div>
+	</div>
+
+	<div th:replace="fragments :: pagination('/attempts','Attempts')"></div>
+	<div class="modal fade text-center" id="confirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="confirmText"></span>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-success" id="yesButton">Yes</a>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		function clearSearch() {
+			window.location = "[[@{/attempts}]]";
+		}
+	</script>
+
+</div>
+<!-- /.container-fluid -->
+</html>

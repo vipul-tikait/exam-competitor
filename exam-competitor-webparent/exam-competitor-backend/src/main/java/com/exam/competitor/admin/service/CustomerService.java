@@ -99,4 +99,7 @@ public class CustomerService {
 		customerRepo.deleteById(id);
 	}
 	
+	public Customer getCustomerByEmail(String email) {
+		return customerRepo.findByEmail(email);
+	}
 }

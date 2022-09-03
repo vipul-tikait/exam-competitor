@@ -172,11 +172,11 @@ public class CustomerController {
 		custSet.add(customer);
 		Set<Course> setCourses = courseService.getCoursesByCustId(custSet);
 
-		for (Course course : setCourses) {
-			
-		}
+		
 		model.addAttribute("customer", customer);
 		model.addAttribute("setCourses", setCourses);
+		model.addAttribute("custId", customer.getId());
+		
 
 		return "customer/customer_courses";
 	}

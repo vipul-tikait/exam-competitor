@@ -24,21 +24,21 @@ public class RoleRepositoryTests {
 	
 	@Test
 	public void testCreatFirstRole() {
-		Role roleAdmin = new Role("Admin", "Manage everything");
+		Role roleAdmin = new Role("Moderator", "Manage courses");
 		Role savedRole = repo.save(roleAdmin);
 		assertThat(savedRole.getId()).isGreaterThan(0);
 		
 		
 	}
 
-	@Test
-	public void testCretRestRole() {
-		Role role1 = new Role("Salesperson", "Manage product, price");
-		Role role2 = new Role("Editor", "Manage Categories, Brands");
-		Role role3 = new Role("Shipper", "View products, orders, update order status");
-		Role role4 = new Role("Assistant", "Manage Question answer");
-		repo.saveAll(List.of(role1,role2,role3, role4));
-		
-	}
-
+	/*
+	 * @Test public void testCretRestRole() { Role role1 = new Role("Salesperson",
+	 * "Manage product, price"); Role role2 = new Role("Editor",
+	 * "Manage Categories, Brands"); Role role3 = new Role("Shipper",
+	 * "View products, orders, update order status"); Role role4 = new
+	 * Role("Assistant", "Manage Question answer");
+	 * repo.saveAll(List.of(role1,role2,role3, role4));
+	 * 
+	 * }
+	 */
 }

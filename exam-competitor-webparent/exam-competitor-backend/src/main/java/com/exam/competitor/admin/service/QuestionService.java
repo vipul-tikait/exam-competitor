@@ -41,6 +41,10 @@ public class QuestionService {
 
 		return (List<Question>) questionRepository.findAll();
 	}
+	public Integer getMaxeId() {
+
+		return  questionRepository.getMaxId();
+	}
 
 	/*
 	 * public User getUserByEmail(String email) { return

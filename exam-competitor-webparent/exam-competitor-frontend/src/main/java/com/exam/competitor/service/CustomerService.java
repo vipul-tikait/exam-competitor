@@ -2,6 +2,7 @@ package com.exam.competitor.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -52,6 +53,10 @@ public class CustomerService {
 
 	}
 
+	
+	public Optional<Customer> getCustomerById(Integer id) {
+		return customerRepo.findById(id);
+	}
 	
 	public Customer getCustomerByEmail(String email) {
 		return customerRepo.findByEmail(email);

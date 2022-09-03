@@ -15,7 +15,6 @@ import org.springframework.test.annotation.Rollback;
 
 import com.exam.competitor.admin.common.entity.Country;
 import com.exam.competitor.admin.common.entity.State;
-import com.exam.competitor.admin.setting.state.StateRepository;
 
 
 @DataJpaTest
@@ -90,6 +89,6 @@ public class StateRepositoryTests {
 		repo.deleteById(stateId);
 
 		Optional<State> findById = repo.findById(stateId);
-		assertThat(findById.isEmpty());		
+		assertThat(findById.isPresent());		
 	}
 }

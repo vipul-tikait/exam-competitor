@@ -36,7 +36,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	 */
 	@Query("SELECT p FROM Question p WHERE p.name LIKE %?1% " 
 			+ "OR p.description LIKE %?1% "
-			+ "OR p.pdfName LIKE %?1% "
+			+ "OR p.questionPdfName LIKE %?1% "
 			+ "OR p.topic.name LIKE %?1%")		
 	public Page<Question> findAll(String keyword, Pageable pageable);
 	
@@ -51,7 +51,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 			+ "(p.name LIKE %?3% " 
 			+ "OR p.name LIKE %?3% "
 			+ "OR p.description LIKE %?3% "
-			+ "OR p.pdfName  LIKE %?3% "
+			+ "OR p.questionPdfName  LIKE %?3% "
 			+ "OR p.topic.name LIKE %?3%)")			
 	public Page<Question> searchInTopic(Integer topicId, String topicIdMatch, 
 			String keyword, Pageable pageable);
@@ -70,5 +70,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	Page<Question> findByTopicIn(Set<Topic> ids,Pageable pageable);
 	
 	List<Question> findByTopicIn(Set<Topic> ids);
+	
+	 @Query("SELECT coalesce(max(c.id), 0) FROM Question c") 
+	 public Integer getMaxId();
 	
 }

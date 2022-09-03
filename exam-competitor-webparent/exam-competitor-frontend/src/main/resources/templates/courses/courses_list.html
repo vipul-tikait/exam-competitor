@@ -82,6 +82,8 @@
 									<div th:unless="${#lists.contains(course.customers.id, cust.id)}">
 										<a th:href="@{'/courses/details/'+${course.id}}"><button type="button" class="btn btn-danger" style="border-radius: 15px; font-size: 1.0em">Get Admission</button></a>
 									</div> -->
+									
+									<input type="hidden" name="custId" th:object="${custId}"  th:value="${custId}">
 									 <div th:if="${#lists.size(course.customers) > 0}">
 										 <div th:each="customer : ${course.customers}" >
 											 <div th:if="${customer.id == cust.id}">
@@ -123,7 +125,7 @@
 
 		</div>
 
-	</div>
+	
 	<script type="text/javascript">
 	
 		$(document).ready(

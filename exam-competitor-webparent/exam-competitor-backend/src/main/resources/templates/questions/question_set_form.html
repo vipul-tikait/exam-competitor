@@ -159,13 +159,12 @@
 							<div
 								th:replace="fragments::column_link('/questions/page/','id', 'Id','tag')"></div>
 						</td>
-						<td>Photo</td>
 						<td>
 							<div
 								th:replace="fragments::column_link('/questions/page/','name', 'Content','none')"></div>
 						<td class="hideable-column">
 							<div
-								th:replace="fragments::column_link('/questions/page/','pdfName', 'PDF','none')"></div>
+								th:replace="fragments::column_link('/questions/page/','questionPdfName', 'PDF','none')"></div>
 						</td>
 						<td>
 							<div
@@ -178,9 +177,11 @@
 				<tbody>
 					<tr th:each="question : ${questionSet.questions}">
 						<td class="hideable-column">[[${question.id}]]</td>
-						<td></td>
 						<td>[[${question.name}]]</td>
-						<td>[[${question.pdfName}]]</td>
+						<td><div th:if="${question.questionPdfName != null}">
+								 <a th:href="@{'/questions/file/'+${question.id}}"><i class="fas fa-solid fa-file-pdf"></i></a>
+							</div>
+</td>
 						<td class="hideable-column">[[${question.topic.name}]]</td>
 						<td><div
 								th:replace="fragments::status('/questions/' +${question.id},'question', ${question.enabled})"></div></td>

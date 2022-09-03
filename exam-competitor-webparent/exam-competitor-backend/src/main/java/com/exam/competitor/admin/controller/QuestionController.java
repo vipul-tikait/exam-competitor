@@ -1,30 +1,45 @@
 package com.exam.competitor.admin.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.exam.competitor.admin.common.entity.Topic;
 import com.exam.competitor.admin.common.entity.course.Question;
 import com.exam.competitor.admin.common.entity.course.QuestionSet;
-import com.exam.competitor.admin.common.entity.exam.Exam;
-import com.exam.competitor.admin.common.entity.exam.ExamLevel;
-import com.exam.competitor.admin.common.entity.exam.MainExam;
-import com.exam.competitor.admin.common.entity.exam.MainExamType;
 import com.exam.competitor.admin.exception.QuestionNotFoundException;
 import com.exam.competitor.admin.exception.QuestionSetNotFoundException;
 import com.exam.competitor.admin.exception.TopicNotFoundException;
+import com.exam.competitor.admin.export.FileUploadUtil;
 import com.exam.competitor.admin.service.ExamLevelService;
 import com.exam.competitor.admin.service.ExamService;
 import com.exam.competitor.admin.service.MainExamService;
@@ -189,7 +204,24 @@ public class QuestionController {
 	}
 
 	@PostMapping("/questions/save")
-	public String saveQuestion(Question question, RedirectAttributes redirectAttributes) throws IOException {
+	public String saveQuestion(Question question, RedirectAttributes redirectAttributes,
+			@RequestParam("questionPdf") MultipartFile multipartFile) throws IOException {
+		
+		if (!(multipartFile.isEmpty())) {
+			String fileName = org.springframework.util.StringUtils.cleanPath(multipartFile.getOriginalFilename()).replaceAll("\\s","");
+			
+			question.setQuestionPdfName(fileName);
+			
+			Question savedUser = questionService.save(question);
+					
+			String uploadDir = "../question-pdf/"+savedUser.getId();
+			FileUploadUtil.cleanDir(uploadDir);
+			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+		}else {
+			if (question.getQuestionPdfName() == null || question.getQuestionPdfName().isEmpty()) 
+				question.setQuestionPdfName(null);
+			questionService.save(question);
+		}
 		Question savedQuestion = questionService.save(question);
 
 		redirectAttributes.addFlashAttribute("message", "Questions has been saved successfully.");
@@ -244,7 +276,7 @@ public class QuestionController {
 
 	}
 	 
-	@GetMapping("/questions/{qsid}/assign/{qid}")
+	@GetMapping("/questions/{qsid}/assign/")
 	public String assignQuestion(@PathVariable(name = "qsid") Integer id, @PathVariable("qid") Boolean status,
 			Model model, RedirectAttributes redirectAttributes) {
 
@@ -257,6 +289,9 @@ public class QuestionController {
 		return "redirect:/questions";
 
 	}
+	
+
+	
 	/*
 	 * @GetMapping("/questions/{cid}/assign/{qsId}/{status}") public String
 	 * assignQsetCourse(@PathVariable(name = "cid") Integer id, @PathVariable(name =

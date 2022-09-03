@@ -1,7 +1,9 @@
 
 package com.exam.competitor.admin.common.entity.course;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.exam.competitor.admin.common.entity.exam.ExamLevel;
@@ -55,7 +58,8 @@ public class QuestionSet {
 	joinColumns = @JoinColumn(name = "que_set_id"),
 	inverseJoinColumns = @JoinColumn(name= "que_id")
 	)
-	private Set<Question> questions = new HashSet<>();
+	@OrderBy("id")
+	private List<Question> questions = new ArrayList();
 	
 	
 	public QuestionSet() {
@@ -120,15 +124,14 @@ public class QuestionSet {
 		this.enabled = enabled;
 	}
 
-	public Set<Question> getQuestions() {
+	
+	public List<Question> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(Set<Question> questions) {
+	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
-
-	
 
 	public String getPrefix() {
 		return prefix;

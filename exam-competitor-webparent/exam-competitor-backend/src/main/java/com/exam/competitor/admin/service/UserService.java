@@ -1,6 +1,7 @@
 package com.exam.competitor.admin.service;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -139,4 +140,11 @@ public class UserService {
 	public void updateEnabledStatus(Integer id, boolean status) {
 		userRepo.updateEnabledStatus(id, status);
 	}
+	
+	public List<User> getModaratorList(){
+		Role role = roleRepo.findById(6).get();
+		return userRepo.findByRoles(role);
+	}
+	
+	
 }

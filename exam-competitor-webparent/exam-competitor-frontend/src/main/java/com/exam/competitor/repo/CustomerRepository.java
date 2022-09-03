@@ -1,8 +1,6 @@
 package com.exam.competitor.repo;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.exam.competitor.admin.common.entity.AuthenticationType;
 import com.exam.competitor.admin.common.entity.Customer;
-import com.exam.competitor.admin.common.entity.course.Course;
-import com.exam.competitor.admin.common.entity.exam.Exam;
 
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 

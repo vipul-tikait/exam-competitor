@@ -94,6 +94,6 @@ public class BrandRepositoryTest {
 		 
 		 Optional<Brand> result = repository.findById(id);
 		 
-		 assertThat(result.isEmpty());
+		 assertThat(result.isPresent());
 	 }
 }

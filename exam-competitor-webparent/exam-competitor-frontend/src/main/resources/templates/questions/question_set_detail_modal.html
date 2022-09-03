@@ -1,0 +1,210 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main}">
+
+<div layout:fragment="content">
+
+	<div style="width: 100%">
+		<hr class="solid">
+		<div>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Course</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" th:field="${course.name}"
+						readonly="readonly" required="required">
+				</div>
+
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Question Set</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control"
+						th:field="${course.questionSet.name}" readonly="readonly"
+						required="required">
+				</div>
+
+			</div>
+		</div>
+		<hr class="solid">
+		<div class="row">
+			<div th:each="question,i: ${course.questionSet.questions}"
+				class="col-sm-4">
+				<!-- <form th:action="@{/attempts/new}" method="post"
+					style="margin: 0 auto;" th:object="${attemptHistory}"
+					enctype="multipart/form-data" id="saveAttemptForm"
+					onsubmit="return checkEmailUnique(this);">
+ -->
+				<!-- <input type="hidden" name="custId" th:value="${custId}" /> <input
+						type="hidden" name="questionId" th:value="${question.id}" /> <input
+						type="hidden" name="courseId" th:value="${course.id}" /> -->
+
+				<div class="course-box course-col-sm-3 course-bg-box  m-2">
+					<div class="card">
+						<div class="card-header p-1">
+							<div class="row">
+								<div class="mx-auto">
+									<h4>
+										<strong><font style="font-size: 0.7em;">
+												[[${course.examLevel.name}]] TEST-[[${i.count}]]&nbsp;
+												([[${question.id}]]) </font></strong>
+									</h4>
+								</div>
+							</div>
+						</div>
+						<div class="card-body course-bg-image " style="height: 100px;">
+							<div class="d-flex flex-wrap justify-content-center"
+								style="text-align: center !important;">
+								<div th:if="${question.questionPdfName != null}">
+									<a th:href="@{'/questions/file/'+${question.id}}">
+										<button style="font-size: 0.8em; border-radius: 5PX;">
+											<strong>Question Paper</strong>
+										</button>
+									</a>
+								</div>
+								<div th:each="queAttempt:${mapQueAttempt.get(question.id)}">
+									<div th:if="${queAttempt.answeredPdfName != null}">
+										<a th:href="@{'/attempts/answered/file/'+${queAttempt.id}}">
+											<button style="font-size: 0.8em; border-radius: 5PX;">
+												<strong>Answer Booklet</strong>
+											</button>
+										</a>
+									</div>
+									<div th:if="${queAttempt.evaluatedPdfName != null}">
+										<a th:href="@{'/attempts/evaluated/file/'+${queAttempt.id}}">
+											<button style="font-size: 0.8em; border-radius: 5PX;">
+												<strong>Evaluated Booklet</strong>
+											</button>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<div th:if=" ${mapQueAttempt.get(question.id) == null}">
+								<form th:action="@{/attempts/new}" method="post"
+									style="margin: 0 auto;" th:object="${attemptHistory}"
+									enctype="multipart/form-data" id="saveAttemptForm"
+									onsubmit="return checkEmailUnique(this);">
+									<input type="hidden" name="custId" th:value="${custId}" /> <input
+										type="hidden" name="questionId" th:value="${question.id}" />
+									<input type="hidden" name="courseId" th:value="${course.id}" />
+									<button class="btn btn-secondary"
+										style="font-size: 0.8em; border-radius: 5PX; width: 100%;">
+										<strong>Attempt</strong>
+									</button>
+								</form>
+							</div>
+							<div th:unless=" ${mapQueAttempt.get(question.id) == null}">
+								<div th:each="queAttempt,i:${mapQueAttempt.get(question.id)}">
+
+									<div th:if="${queAttempt.answeredPdfName != null}">
+										<div th:if="${queAttempt.status == null}">
+											<button class="btn btn-warning"
+												style="font-size: 0.8em; border-radius: 5PX; width: 100%;">
+												<strong>Pending</strong>
+											</button>
+										</div>
+										<div
+											th:if="${queAttempt.status != null && queAttempt.status =='accepted'}">
+											<div th:if="${queAttempt.user != null}">
+												<div th:if="${queAttempt.evaluatedPdfName != null}">
+													<button class="btn btn-success"
+														style="font-size: 0.8em; border-radius: 5PX; width: 100%;">
+														<strong>Completed</strong>
+													</button>
+												</div>
+												<div th:unless="${queAttempt.evaluatedPdfName != null}">
+													<button class="btn btn-info"
+														style="font-size: 0.8em; border-radius: 5PX; width: 100%; background-image: linear-gradient(270deg, rgba(100, 181, 239, 0) 48.44%, #64b5ef 75.52%, rgba(100, 181, 239, 0) 100%); animation: bg-move linear 5s infinite; background-repeat: no-repeat;">
+														<strong>Evaluating</strong>
+													</button>
+
+												</div>
+											</div>
+											<div th:unless="${queAttempt.user != null}">
+												<button class="btn btn-primary"
+													style="font-size: 0.8em; border-radius: 5PX; width: 100%;">
+													<strong>Accepted</strong>
+												</button>
+											</div>
+										</div>
+										<div
+											th:if="${queAttempt.status != null && queAttempt.status =='rejected'}">
+											<a th:href="@{'/attempts/edit/'+${queAttempt.id}}">
+												<button class="btn btn-danger"
+													style="font-size: 0.8em; border-radius: 5PX; width: 100%;">
+													<strong>Rejected</strong><br> <small>(Upload
+														Answer copy again)</small>
+												</button>
+											</a>
+										</div>
+									</div>
+									<div th:unless="${queAttempt.answeredPdfName != null}">
+										<form th:action="@{/attempts/new}" method="post"
+											style="margin: 0 auto;" th:object="${attemptHistory}"
+											enctype="multipart/form-data" id="saveAttemptForm"
+											onsubmit="return checkEmailUnique(this);">
+											<input type="hidden" name="custId" th:value="${custId}" /> <input
+												type="hidden" name="questionId" th:value="${question.id}" />
+											<input type="hidden" name="courseId" th:value="${course.id}" />
+											<button class="btn btn-secondary"
+												style="font-size: 0.8em; border-radius: 5PX; width: 100%;">
+												<strong>Attempt</strong>
+											</button>
+										</form>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="modal fade text-center" id="confirmModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="confirmText"></span>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" id="yesButton">Yes</a>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+				$(".link-course-delete").on(
+						"click",
+						function(e) {
+							e.preventDefault();
+							link = $(this);
+							entityId = link.attr("courseId");
+							$("#yesButton").attr("href", link.attr("href"));
+							$("#confirmText").text(
+									"Are you sure to delete entity with ID : "
+											+ entityId);
+							$("#confirmModal").modal();
+						});
+			});
+</script>
+
+</div>
+<!-- /.container-fluid -->
+</html>

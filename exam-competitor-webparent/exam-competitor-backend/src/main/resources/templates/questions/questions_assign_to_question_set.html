@@ -15,25 +15,24 @@
 
 				<input type="hidden" name="sortField" th:value="${sortField}" /> <input
 					type="hidden" name="sortDir" th:value="${sortDir}" /> <input
-					type="hidden" name="id" th:value="*{id}" />
-				<input type="hidden" name="qSetId" th:value="${qSetId}" id="qSetId"/>
-				
+					type="hidden" name="id" th:value="*{id}" /> <input type="hidden"
+					name="qSetId" th:value="${qSetId}" id="qSetId" />
+
 				<div class="border border-secondary rounded p-3">
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label">Question Set</label>
 						<div class="col-sm-6">[[${questionSet.name}]]</div>
-						
+
 					</div>
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">Topics</label> 
-						<select class="col-sm-4" name="topicId" id="dropdownTopicAtAssignQue">
+						<label class="col-sm-2 col-form-label">Topics</label> <select
+							class="col-sm-4" name="topicId" id="dropdownTopicAtAssignQue">
 							<option value="0">All Topics</option>
 							<th:block th:each="topic : ${listTopicAddMore}">
 								<option th:value="${topic.id}"
 									th:selected="(${topicId} == ${topic.id})">[[${topic.name}]]</option>
 							</th:block>
-						</select>
-						<label class="col-sm-1 col-form-label">Filter</label>
+						</select> <label class="col-sm-1 col-form-label">Filter</label>
 						<div class="col-sm-3">
 							<input type="search" name="keyword" th:value="${keyword}"
 								class="form-control" />
@@ -69,7 +68,6 @@
 										th:replace="fragments::column_link('/questions/page/','id', 'Id','tag')"></div>
 
 								</td>
-								<td>Photo</td>
 								<td>
 									<div
 										th:replace="fragments::column_link('/questions/page/','name', 'Content','none')"></div>
@@ -90,9 +88,11 @@
 								<td class="hideable-column"><input type="checkbox"
 									class="m-2" th:field="*{questions}" th:value="${question.id}" />
 									[[${question.id}]]</td>
-								<td></td>
 								<td>[[${question.name}]]</td>
-								<td>[[${question.pdfName}]]</td>
+								<td><div th:if="${question.questionPdfName != null}">
+										<a th:href="@{'/questions/file/'+${question.id}}"><i
+											class="fas fa-solid fa-file-pdf"></i></a>
+									</div></td>
 								<td class="hideable-column">[[${question.topic.name}]]</td>
 								<td><div
 										th:replace="fragments::status('/questions/' +${question.id},'question', ${question.enabled})"></div></td>

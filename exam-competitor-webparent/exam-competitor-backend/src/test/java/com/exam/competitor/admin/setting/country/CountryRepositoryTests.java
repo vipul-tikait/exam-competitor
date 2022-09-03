@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
 import com.exam.competitor.admin.common.entity.Country;
-import com.exam.competitor.admin.setting.country.CountryRepository;
 
 
 @DataJpaTest
@@ -65,6 +64,6 @@ public class CountryRepositoryTests {
 		repo.deleteById(id);
 		
 		Optional<Country> findById = repo.findById(id);
-		assertThat(findById.isEmpty());
+		assertThat(findById.isPresent());
 	}
 }
