@@ -16,7 +16,7 @@
 	<name>exam-competitor-webparent</name>
 	<description>Zoopkan Daily Web Parent</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<modules>
