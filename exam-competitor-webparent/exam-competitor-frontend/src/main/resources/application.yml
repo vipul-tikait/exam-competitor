@@ -2,6 +2,13 @@ server:
   port: 18090
   servlet:
     context-path: /exam-competitor
+  ssl:
+    key-store: classpath:iassupersimplified.jks
+    key-store-password: uss@6096
+    key-store-type: jks
+    key-alias: exam-competitor
+    key-password: uss@6096
+
 spring:
   datasource:
     password: rootpassword
