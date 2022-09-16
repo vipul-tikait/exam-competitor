@@ -24,7 +24,7 @@ public class ExamCompetitorFrontendApplication {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
+	/*	@Bean
 	  public ServletWebServerFactory servletContainer() {
 	    TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
 	      @Override
@@ -40,14 +40,13 @@ public class ExamCompetitorFrontendApplication {
 	    tomcat.addAdditionalTomcatConnectors(getHttpConnector());
 	    return tomcat;
 	  }
-
-	  private Connector getHttpConnector() {
-		Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-	    connector.setScheme("http");
-	    connector.setPort(8090);
-	    connector.setSecure(false);
-	    connector.setRedirectPort(18090);
-	    return connector;
-	  }	
+*/
+		/*
+		 * private Connector getHttpConnector() { Connector connector = new
+		 * Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+		 * connector.setScheme("http"); connector.setPort(8090);
+		 * connector.setSecure(false); connector.setRedirectPort(18090); return
+		 * connector; }
+		 */
 
 }
