@@ -36,6 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				 * "/cart", "/address_book/**", "/checkout", "/place_order", "/reviews/**",
 				 * "/process_paypal_order", "/write_review/**", "/post_review").authenticated()
 			.	 */
+		.antMatchers("/", "/find", "/login", "/signup", "/error", "/login-error").permitAll() //All user permissions
+    	
 		.antMatchers("/users/**", "/settings/**", "/countries/**", "/states/**").hasAuthority("Admin")
 		.antMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin","Editor")
 
@@ -63,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.loginPage("/login")
 				.usernameParameter("email")
 				.successHandler(databaseLoginSuccessHandler)
+				.failureUrl("/login-error")      //URL when authentication fails
+            	.defaultSuccessUrl("/")
 				.permitAll()
 			.and()
 			.oauth2Login()
