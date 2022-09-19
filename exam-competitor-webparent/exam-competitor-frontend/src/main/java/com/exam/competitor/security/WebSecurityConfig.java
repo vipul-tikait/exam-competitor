@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				 * "/cart", "/address_book/**", "/checkout", "/place_order", "/reviews/**",
 				 * "/process_paypal_order", "/write_review/**", "/post_review").authenticated()
 			.	 */
-		.antMatchers("/", "/find", "/login", "/signup", "/error", "/login-error").permitAll() //All user permissions
+		.antMatchers("/", "/find", "/login", "/signup", "/error", "/login-error","/images/**","/js/**","/webjars/**","**/**").permitAll() //All user permissions
     	
 		.antMatchers("/users/**", "/settings/**", "/countries/**", "/states/**").hasAuthority("Admin")
 		.antMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin","Editor")
