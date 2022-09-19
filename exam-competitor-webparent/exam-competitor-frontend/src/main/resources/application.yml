@@ -27,8 +27,10 @@ spring:
       client:
         registration:
           google:
-            client-id: 975264141252-m90mhkiipt1d9ap6p0b04olge9tn00hv.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 975264141252-jpsgo2f7omeafri8sjf5bktdjq2202mk.apps.googleusercontent.com
+            client-secret: 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
+#            client-id: 975264141252-m90mhkiipt1d9ap6p0b04olge9tn00hv.apps.googleusercontent.com
+#            client-secret: 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
 #            client-id: 475645084529-rjepbsf67b90fp4j3hbf3rnq4omme32a.apps.googleusercontent.com
 #            client-secret: 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
             scope:
